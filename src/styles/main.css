@@ -1,0 +1,208 @@
+:root {
+    font-family: "Ubuntu", cursive;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    --wrong: #9f3647;
+    --correct: rgb(60, 179, 113);
+    --a: #10002B;
+    --b: #240046;
+    --c: #3C096C;
+    --d: #5A189A;
+    --e: #7B2CBF;
+    --f: #9D4EDD;
+    --g: #C77DFF;
+    --h: #E0AAFF;
+}
+
+body {
+    color: var(--a);
+}
+
+.no-border {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0;
+}
+
+.mb-3 {
+    margin-bottom: 3px;
+}
+
+.col-md-6 > * {
+    margin: 6px 6px;
+}
+
+/* ==================================== MAINNAV ==================================== */
+
+#mainNav {
+    width: 101%;
+    position: fixed;
+    top: 0px;
+    z-index: 10000;
+    display: flex;
+}
+
+.navbar.bg-body-tertiary {
+    background-color: #2f2f2f;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: xx-large;
+}
+
+/* =================================== CONTAINER =================================== */
+
+#mainContainer {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+    background-color: var(--h);
+    font-size: large;
+}
+
+#mainContainer.container-fluid {
+    background-color: var(--h);
+}
+
+/* ===================================== CROSSWORD PUZZLE (BOTH ACTUAL AND PRINTED) ===================================== */
+
+.form-control:disabled {
+    background-color: var(--f);
+}
+
+.wrong-answer {
+    border: 1px solid var(--wrong);
+}
+
+.correct-answer {
+    font-weight: bold;
+    border: none;
+}
+
+#cpuzzle {
+    overflow-x: hidden;
+}
+
+.puzzle-form {
+    display: grid;
+    gap: 2px;
+    width: min-content;
+    padding: 10px 40px;
+}
+
+.puzzle-cell {
+    background-color: white;
+    border: 0.5px solid black;
+    width: 39px;
+    text-align: center;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 400;
+    font-size: medium;
+    padding: 5px;
+}
+
+#cpuzzle-generator-container input.text {
+    width: 300px;
+}
+
+.actual .puzzle-cell {
+    background-color: var(--e);
+    border: 0.5px solid var(--d);
+    color: white;
+}
+
+.actual .puzzle-cell:hover, .actual .correct-answer {
+    background-color: var(--f);
+}
+
+.actual .puzzle-cell:disabled {
+    background-color: var(--c);
+}
+
+/* ===================================== TEXTAREA ===================================== */
+
+#cpuzzle-code textarea {
+    font-family: Consolas;
+    background-color: var(--a);
+    color: var(--h);
+    width: 300px;
+    height: 300px;
+}
+
+/* ==================================== BUTTONS ===================================== */
+.btn.btn-primary {
+    color: var(--h);
+    background-color: var(--a);
+    border: 1px solid var(--c);
+    margin: 1px 3px;
+    font-size: medium;
+}
+
+.btn.btn-primary:hover {
+    background-color: #3C096C;
+}
+
+/* ===================================== FOOTER ===================================== */
+footer {
+    background-color: var(--a);
+    color: var(--h);
+}
+
+footer a {
+    color: var(--h);
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+/* ==================================== SCROLLBAR =================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--g);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--b);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--d);
+}
+
+/* ==================================== NAVBAR LANGUAGE CONTAINER  =================================== */
+
+.langauge-selection {
+    margin-right: 20px;
+}
+
+.language-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.active-btn {
+    background-color: var(--d);
+    color: white;
+    font-weight: bold;
+}

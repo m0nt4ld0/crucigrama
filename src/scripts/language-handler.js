@@ -20,7 +20,7 @@
 */
 
 // Updates the content of the HTML document with the inputed language Data
-function updateContent(langData) {
+export function updateContent(langData) {
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         if (element.tagName == "INPUT"){
@@ -34,20 +34,9 @@ function updateContent(langData) {
     });
 }
 
-// Sets the local language variable to the passed value
-function setLanguage(language) {
-    localStorage.setItem('language', language);
-    location.reload();
-}
-
-// General call function to refresh the language on the page
-function updateLanguage() {
-    var lang = localStorage.getItem('language');
-    updateContent(translation[lang]);
-}
 
 // Constant variable that stores all of the translations for multiple languages
-const translation = {
+export const translation = {
     en: {
         personalized_puzzle_title: 'Personalized Crossword Puzzle',
         personalized_puzzle_message: 'Next, you can generate your own crossword puzzle, with the words you choose. <br> First, enter which word will be displayed vertically:',
@@ -102,8 +91,12 @@ const translation = {
 }
 
 // Function to return the place holder text for the generateFormLoadCustomCrossword() function.
-function getPlaceholderTranslation() {
-    var language = localStorage.getItem('language');
-    placeHolderTranslation = [translation[language].leftPlaceholderOne, translation[language].leftPlaceholderTwo, translation[language].rightPlaceholderOne, translation[language].rightPlaceholderTwo];
+export function getPlaceholderTranslation(language) {
+    let placeHolderTranslation = [
+        translation[language].leftPlaceholderOne,
+        translation[language].leftPlaceholderTwo,
+        translation[language].rightPlaceholderOne,
+        translation[language].rightPlaceholderTwo
+    ];
     return placeHolderTranslation;
 }
