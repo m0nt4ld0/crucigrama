@@ -1,532 +1,492 @@
 /*
 * ========================================================================================
-*  Nombre del archivo: crossword-puzzle.js
-*  Autor: Mariela Montaldo
-*  Fecha de creación: 30/05/2024
-*  Última modificación: 10/08/2024
-*  Versión: v0.2
+*  File Name: crossword-puzzle.js
+*  Author: Mariela Montaldo
+*  Created: 30/05/2024
+*  Last Modified: 27/03/2025
+*  Version: v0.3
 *
-*  Descripción:
-*  Este archivo contiene el código de validación y construcción del crucigrama. Dicho
-*  crucigrama está organizado en una tabla de 36x36, tomando como centro la posición
-*  número 18 y calculando desplazamientos en base a esto, para que la palabra dada
-*  como pista quede alineada verticalmente en la posición número 18.
+*  Description:
+*  This file contains the validation and construction logic for the crossword puzzle.
+*  The puzzle is organized in a 36x36 grid, centered at position 18, with vertical
+*  words aligned at the center position.
 *
-*  Historial de modificaciones:
-*  - 30/05/2024: Mariela Montaldo - Creación del archivo.
-*  - 10/08/2024: Mariela Montaldo - Agrego textarea e incorporación de crucigrama JSON.
-*  - 11/08/2024: Mariela Montaldo - Agrego impresión del crucigrama
+*  Changes:
+*  - Complete rewrite with localization support
+*  - Improved code organization
+*  - Better separation of concerns
 *
-*  Copyright (c) 2024 Mariela Montaldo.
-*
-*  Licencia:
-*  Este código está licenciado bajo la GPL-3.0. Para más información, 
-*  consulte el archivo LICENSE adjunto en el directorio raíz del proyecto o visite 
-*  https://fsf.org/.
-*
+*  License: GPL-3.0
 * ========================================================================================
 */
 
-// Declaración de variables globales
+class CrosswordPuzzle {
+  constructor() {
+      this.answers = [];
+      this.vword = "";
+      this.refs = [];
+      this.formGenerated = false;
+      this.numberOfInputs = 0;
+      this.correctAnswers = 0;
+      this.originalColors = {};
 
-_answers = [];
-_vword = "";
-_refs = [];
-_form = false;
-numberOfInputs  = 0 ;
-correctAnswers = 0 ;
-originalColors = {};
- //Variable para marcar formulario de generacion de crucigrama como impreso
+      // DOM Elements
+      this.puzzleContainer = document.getElementById('cpuzzle');
+      this.referencesContainer = document.getElementById('references');
+      this.generatorContainer = document.getElementById('cpuzzle-generator-container');
+      this.jsonPuzzleInput = document.getElementById('jsonpuzzle');
 
-// Declaración de constantes
-const CPUZZLE_CONTAINER = document.getElementById('cpuzzle');
-const REFERENCES_CONTAINER = document.getElementById('references');
-const GENERATOR_CONTAINER = document.getElementById('cpuzzle-generator-container');
-const JSONPUZZLE_INPUT = document.getElementById('jsonpuzzle');
+      // Constants
+      this.GRID_SIZE = 36;
+      this.CENTER_POSITION = 18;
+  }
 
+  // Initialize the puzzle
+  init() {
+      this.preloadCrossword();
+      this.drawCrossword(this.vword, this.answers, false);
+      this.setCrosswordReferences(this.refs, "references");
+  }
 
-// Constantes globales
-const _SIZE = 36;
-const _HALF = 18;
+  // Preload crossword data from JSON
+  preloadCrossword() {
+      try {
+          const jsonData = JSON.parse(this.jsonPuzzleInput.value);
+          if (jsonData && jsonData.length > 0) {
+              this.answers = jsonData[0].answers || [];
+              this.vword = jsonData[0].vword || "";
+              this.refs = jsonData[0].refs || [];
+          }
+      } catch (error) {
+          console.error("Error parsing JSON puzzle:", error);
+      }
+  }
 
-function preloadCrossword() {
-    var json_arr = {};
-    json_arr = JSON.parse(JSONPUZZLE_INPUT.value);
-    _answers = json_arr[0]["answers"];
-    _vword = json_arr[0]["vword"];
-    _refs = json_arr[0]["refs"];
-}
+  // Draw the crossword puzzle grid
+  drawCrossword(vword, answers, showAnswers) {
+      if (!vword || !answers || answers.length === 0) return;
 
-// Dibujar el crucigrama
-function drawCrossword (vword, ans, showAnswers) {
-    let html = `
-        <form>
-            <table 
-                class="table table-borderless">`;
-    
-    // i es contador para cantidad de letras de la palabra vertical (filas del crucigrama)
-    for(i=0; i < ans.length; i++) {
-        html += '<tr>';
-        // pos inicial y final donde se empiezan a escribir las palabras en la fila horizontal
-        let initPosition = Math.max(0, _HALF - ans[i].toLowerCase().indexOf(vword[i].toLowerCase()));
+      let html = `<form><table class="table table-borderless">`;
+      this.numberOfInputs = 0;
 
-        // c contador para letras de las palabras horizontales
-        let c = 0;
-        let color = false;
-        
-        // j contador para espacios horizontales (vacíos o con letras, es indistinto)
-        for(j = 0; j < _SIZE; j++) {
-            if(j >= initPosition && j < initPosition + ans[i].length) {
-                if(ans[i][j - initPosition].toLowerCase() == vword[i].toLowerCase() && !color) {
-                    html += `<td 
-                                class="table-primary" 
-                                id="clueword">
-                                <input 
-                                    type="text" 
-                                    size="1" 
-                                    maxlength="1" 
-                                    readonly="readonly" 
-                                    value="${ans[i][c].toUpperCase()}" />
-                            </td>`;
-                    color = true;
-                } else {
+      for (let i = 0; i < answers.length; i++) {
+          html += '<tr>';
+          const initPosition = Math.max(0, this.CENTER_POSITION - 
+              answers[i].toLowerCase().indexOf(vword[i].toLowerCase()));
 
-                    html += `<td 
-            class="table-secondary">
-            <input 
-                type="text" 
-                id="txt-${i}-${c}" 
-                onkeyup="validateChar(${i},${c})" 
-                class="form-control no-border" 
-                size="1" 
-                maxlength="1" 
-                value="${(showAnswers == true ? ans[i][c] : "")}"/>
-        </td>`;
-        numberOfInputs++;
-        // console.log("num of inputs :"+numberOfInputs);
-                }
-                c++;
-            } else {
-                html += `<td></td>`;
-            }
-        }
-        html += `</tr>`;
-    }
-    CPUZZLE_CONTAINER.innerHTML = html + `</table></form>`;
-}
+          let charIndex = 0;
+          let colored = false;
 
-function setCrosswordReferences(descriptions, container) {
-    let cont = document.getElementById(container);
-    cont.innerHTML += `<h3 data-i18n="references_title">Referencias</h3><ol>`;
-    for(s of descriptions) {
-        cont.innerHTML += `<li>${s}</li>`;
-    }
-    cont.innerHTML += `</ol>`;
-}
+          for (let j = 0; j < this.GRID_SIZE; j++) {
+              if (j >= initPosition && j < initPosition + answers[i].length) {
+                  const currentChar = answers[i][charIndex];
+                  const isVerticalChar = currentChar.toLowerCase() === vword[i].toLowerCase();
 
-function validateChar(i, c) {
- 
-    const txtName = 'txt-' + i + '-' + c ;
-    const e = document.getElementById(txtName);
-    const secondaryCells = document.querySelectorAll('#cpuzzle .table-secondary input');
-    //Removes the error condition if the cell value is emptied
-    e.value==="" ?e.classList.remove("wrong-answer") :null;
-    if(e.value !== "" && e.value.toUpperCase() != _answers[i][c].toUpperCase()) {
-        e.classList.remove("correct-answer");
-        e.classList.add("wrong-answer");
-    }
-    if(e.value !== "" && e.value.toUpperCase() == _answers[i][c].toUpperCase()) {
-        e.classList.remove("wrong-answer");
-        e.classList.add("correct-answer");
-        correctAnswers++;
-        returnVal();
-        console.log(correctAnswers);
-        //Move focus to the next cell
-        secondaryCells[[...secondaryCells].indexOf(e)+1] ?.focus();
-        e.disabled = true;
-    }
-    if (checkIfAllCorrect()) {
-        setTimeout(() => {
-            const modalHtml = `
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Congratulations</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                  if (isVerticalChar && !colored) {
+                      html += `<td class="table-primary" id="clueword">
+                              <input type="text" size="1" maxlength="1" readonly 
+                                  value="${currentChar.toUpperCase()}" />
+                          </td>`;
+                      colored = true;
+                  } else {
+                      html += `<td class="table-secondary">
+                          <input type="text" id="txt-${i}-${charIndex}" 
+                              onkeyup="crossword.validateChar(${i},${charIndex})" 
+                              class="form-control no-border" size="1" maxlength="1" 
+                              value="${showAnswers ? currentChar : ''}"/>
+                      </td>`;
+                      this.numberOfInputs++;
+                  }
+                  charIndex++;
+              } else {
+                  html += '<td></td>';
+              }
+          }
+          html += '</tr>';
+      }
+
+      this.puzzleContainer.innerHTML = html + '</table></form>';
+  }
+
+  // Set crossword references
+  setCrosswordReferences(descriptions, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container || !descriptions) return;
+
+      let html = `<h3 data-i18n="references_title">References</h3><ol>`;
+      descriptions.forEach(desc => {
+          html += `<li>${desc}</li>`;
+      });
+      container.innerHTML = html + '</ol>';
+  }
+
+  // Validate character input
+  validateChar(row, col) {
+      const inputId = `txt-${row}-${col}`;
+      const inputElement = document.getElementById(inputId);
+      const allInputs = document.querySelectorAll('#cpuzzle .table-secondary input');
+
+      if (!inputElement) return;
+
+      // Clear error state if input is empty
+      if (inputElement.value === "") {
+          inputElement.classList.remove("wrong-answer");
+          return;
+      }
+
+      const isCorrect = inputElement.value.toUpperCase() === this.answers[row][col].toUpperCase();
+
+      inputElement.classList.toggle("wrong-answer", !isCorrect);
+      inputElement.classList.toggle("correct-answer", isCorrect);
+
+      if (isCorrect) {
+          this.correctAnswers++;
+          this.updateProgress();
+          
+          // Move focus to next input
+          const nextIndex = [...allInputs].indexOf(inputElement) + 1;
+          if (nextIndex < allInputs.length) {
+              allInputs[nextIndex].focus();
+          }
+          
+          inputElement.disabled = true;
+      }
+
+      if (this.checkCompletion()) {
+          this.showCompletionModal();
+      }
+  }
+
+  // Check if all answers are correct
+  checkCompletion() {
+      return this.answers.every((word, row) => 
+          [...word].every((char, col) => {
+              const input = document.getElementById(`txt-${row}-${col}`);
+              return !input || input.value.toUpperCase() === char.toUpperCase();
+          })
+      );
+  }
+
+  // Show completion modal
+  showCompletionModal() {
+      setTimeout(() => {
+          const lang = localStorage.getItem('language') || 'en';
+          const modalHtml = `
+              <div class="modal fade" id="completionModal" tabindex="-1">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" data-i18n="congratulations_title">
+                                  ${translation[lang]?.congratulations_title || "Congratulations"}
+                              </h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body" data-i18n="congratulations_message">
+                              ${translation[lang]?.congratulations_message || "You have successfully completed the puzzle"}
+                          </div>
+                      </div>
                   </div>
-                  <div class="modal-body">
-                    You have successfully completed the puzzle
+              </div>`;
+          
+          document.body.insertAdjacentHTML('beforeend', modalHtml);
+          const modal = new bootstrap.Modal(document.getElementById('completionModal'));
+          modal.show();
+      }, 50);
+  }
+
+  // Restart the puzzle
+  restart() {
+      this.referencesContainer.innerHTML = '';
+      this.puzzleContainer.innerHTML = '';
+      this.correctAnswers = 0;
+      this.updateProgress();
+      this.drawCrossword(this.vword, this.answers, false);
+      this.setCrosswordReferences(this.refs, "references");
+      
+      const lang = localStorage.getItem('language') || 'en';
+      alert(translation[lang]?.alert_ready || "Ready!");
+  }
+
+  // Load puzzle from JSON input
+  loadFromJSON() {
+      try {
+          const jsonData = JSON.parse(this.jsonPuzzleInput.value);
+          if (jsonData && jsonData.length > 0) {
+              this.answers = jsonData[0].answers || [];
+              this.vword = jsonData[0].vword || "";
+              this.refs = jsonData[0].refs || [];
+              
+              this.referencesContainer.innerHTML = '';
+              this.puzzleContainer.innerHTML = '';
+              this.drawCrossword(this.vword, this.answers, false);
+              this.setCrosswordReferences(this.refs, "references");
+              
+              const lang = localStorage.getItem('language') || 'en';
+              alert(translation[lang]?.alert_ready || "Ready!");
+          }
+      } catch (error) {
+          console.error("Error loading from JSON:", error);
+      }
+  }
+
+  // Update progress bar
+  updateProgress() {
+      const progressBar = document.querySelector('.progress-bar');
+      if (progressBar) {
+          const progress = (this.correctAnswers / this.numberOfInputs) * 100;
+          progressBar.style.width = `${progress}%`;
+      }
+  }
+
+  // Print the crossword
+  printCrossword() {
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+          <html>
+              <head>
+                  <title>Crucigrama | ${this.vword || ''}</title>
+                  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+              </head>
+              <body>
+                  ${this.puzzleContainer.innerHTML}
+                  ${this.referencesContainer.innerHTML}
+              </body>
+          </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+  }
+
+  // Show answers
+  showAnswers() {
+      this.puzzleContainer.innerHTML = '';
+      this.drawCrossword(this.vword, this.answers, true);
+  }
+
+  // Generate custom crossword form
+  generateFormLoadCustomCrossword(placeholderTranslation) {
+      const vwordInput = document.getElementById('txt-vword');
+      const vword = vwordInput.value.toUpperCase();
+
+      if (!vword) {
+          const lang = localStorage.getItem('language') || 'en';
+          alert(translation[lang]?.alert_something_wrong || "Something went wrong... Did you load the vertical word?");
+          vwordInput.focus();
+          this.generatorContainer.innerHTML = '';
+          this.formGenerated = false;
+          return;
+      }
+
+      if (this.formGenerated) {
+          this.generatorContainer.innerHTML = '';
+      }
+
+      const [
+          left1 = "Word that contains the letter",
+          left2 = "answer, word #",
+          right1 = "Reference to the word #",
+          right2 = "which contains the letter"
+      ] = placeholderTranslation || [];
+
+      for (let i = 0; i < vword.length; i++) {
+          this.generatorContainer.innerHTML += `
+              <div class="row mb-2">
+                  <div class="col">
+                      <input type="text" class="form-control"
+                          placeholder="${left1} ${vword[i]} (${left2}${i + 1})"
+                          id="txt-hword-${i}">
                   </div>
-                  
-                </div>
+                  <div class="col">
+                      <input type="text" class="form-control"
+                          placeholder="${right1}${i + 1} ${right2} ${vword[i]}"
+                          id="txt-refs-${i}">
+                  </div>
+              </div>`;
+      }
+
+      this.generatorContainer.innerHTML += `
+          <div class="row mt-3">
+              <div class="col">
+                  <input data-i18n="json_mode_button" type="button"
+                      class="form-control btn btn-secondary"
+                      onclick="crossword.showJsonForm()">
               </div>
-            </div>`;
-            
-           
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-    
-            $('#exampleModal').modal('show');
-        }, 50);
-    }
-    
+              <div class="col">
+                  <input data-i18n="generate_button" type="button"
+                      class="form-control btn btn-primary"
+                      onclick="crossword.generateCustomCrossword()">
+              </div>
+          </div>`;
 
-}
-  
+      this.formGenerated = true;
+      updateLanguage(); // Update localized button texts
+  }
 
+  // Generate custom crossword from form
+  generateCustomCrossword() {
+      const vword = document.getElementById('txt-vword').value.toUpperCase();
+      this.vword = vword;
+      this.answers = [];
+      this.refs = [];
 
-function restart() {
-    REFERENCES_CONTAINER.innerHTML = '';
-    CPUZZLE_CONTAINER.innerHTML = '';
-    drawCrossword(_vword, _answers, false);
-    setCrosswordReferences(_refs, "references");
-    alert('¡Listo!');
-}
+      for (let i = 0; i < vword.length; i++) {
+          const answer = document.getElementById(`txt-hword-${i}`).value.toLowerCase();
+          const reference = document.getElementById(`txt-refs-${i}`).value;
+          
+          if (answer && reference) {
+              this.answers.push(answer);
+              this.refs.push(reference);
+          }
+      }
 
-function checkIfAllCorrect() {
-    for (let i = 0; i < _answers.length; i++) {
-        for (let c = 0; c < _answers[i].length; c++) {
-            const txtName = 'txt-' + i + '-' + c;
-            const e = document.getElementById(txtName);
-            if (e && e.value.toUpperCase() !== _answers[i][c].toUpperCase()) {
-                return false;  
-            }
-        }
-    }
-    return true;  
-}
+      this.puzzleContainer.innerHTML = '';
+      this.referencesContainer.innerHTML = '';
+      this.drawCrossword(vword, this.answers, false);
+      this.setCrosswordReferences(this.refs, "references");
+  }
 
+  // Show JSON form
+  showJsonForm() {
+      const vword = document.getElementById('txt-vword').value.toUpperCase();
+      this.generateJSONTemplate(vword);
+      document.getElementById('crossword-code').style.visibility = "visible";
+  }
 
+  // Generate JSON template
+  generateJSONTemplate(vword) {
+      const lang = localStorage.getItem('language') || 'en';
+      const refPrefix = translation[lang]?.reference_x || "Reference ";
+      const wordPrefix = translation[lang]?.word_x || "Word ";
 
-function loadFromJSON() {
-    var json_arr = {};
-    json_arr = JSON.parse(JSONPUZZLE_INPUT.value);
-    _answers = json_arr[0]["answers"];
-    _vword = json_arr[0]["vword"];
-    _refs = json_arr[0]["refs"];
-    REFERENCES_CONTAINER.innerHTML = '';
-    CPUZZLE_CONTAINER.innerHTML = '';
-    drawCrossword(_vword, _answers, false);
-    setCrosswordReferences(_refs, "references");
-    alert('¡Listo!');
-}
+      const template = [{
+          vword: vword,
+          refs: Array.from({length: vword.length}, (_, i) => refPrefix + (i + 1)),
+          answers: Array.from({length: vword.length}, (_, i) => wordPrefix + (i + 1))
+      }];
 
-function returnVal(){
-
-    $('.progress-bar').css(
-        {
-            "width":(correctAnswers/numberOfInputs)*100+"%"
-        }
-    );
-
-    // return correctAnswers ;
-
+      this.jsonPuzzleInput.value = JSON.stringify(template, null, 2);
+  }
 }
 
-function printCrossword() {
-    REFERENCES_CONTAINER.innerHTML = '';
-    CPUZZLE_CONTAINER.innerHTML = '';
-    drawCrossword(_vword, _answers, false);
-    setCrosswordReferences(_refs, "references");
-    let data = `
-        <html>
-            <head>
-                <title>Crucigrama | ${((_vword) ? _vword : '')}</title>
-            </head>
-        <body>` 
-        + CPUZZLE_CONTAINER.innerHTML
-        + REFERENCES_CONTAINER.innerHTML
-        + ` </body>
-            </html>`;
-    const printableWindow = window.open('', '_blank');
-    printableWindow.document.write(data);
-    printableWindow.document.close();
-    printableWindow.print();
-}
+// Initialize global crossword instance
+const crossword = new CrosswordPuzzle();
 
-function showAnswers() {
-    CPUZZLE_CONTAINER.innerHTML = '';
-    drawCrossword(_vword, _answers, true);
-}
-
-function generateFormLoadCustomCrossword(placeholder_translation) {
-    let VWORD_INPUT = document.getElementById('txt-vword');
-    let vword = VWORD_INPUT.value.toUpperCase(); // Usa la variable `vword` de la entrada
-    if(vword) 
-    {
-        if(_form) //Para verificar si el formulario fue impreso antes
-        {
-            GENERATOR_CONTAINER.innerHTML = '';
-        }
-
-        // Delcaration of place holder text with fallback text.
-        let leftPlaceholderOne = "Palabra que contenga la letra";
-        let leftPlaceholderTwo = "respuesta, palabra #";
-
-        let rightPlaceholderOne = "Referencia pzara la palabra #";
-        let rightPlaceholderTwo = "que contiene la letra";
-
-        // Updates the placeholder text with the passed translation text
-        leftPlaceholderOne = placeholder_translation[0];
-        leftPlaceholderTwo = placeholder_translation[1];
-        rightPlaceholderOne = placeholder_translation[2];
-        rightPlaceholderTwo = placeholder_translation[3];
-
-
-        for (let i = 0; i < vword.length; i++)
-        {
-            let data = `
-                <div class="row">
-                    <div class="col">
-                        <input 
-                            type="text"
-                            class="form-control"
-                            placeholder="${leftPlaceholderOne} ${vword[i]} (${leftPlaceholderTwo}${i + 1})."
-                            value=""
-                            id="txt-hword-${i}">
-                    </div>
-                    <div class="col">
-                        <input 
-                            type="text"
-                            class="form-control"
-                            placeholder="${rightPlaceholderOne}${i + 1} ${rightPlaceholderTwo} ${vword[i]}"
-                            value=""
-                            id="txt-refs-${i}">
-                    </div>
-                </div>
-                `;
-            GENERATOR_CONTAINER.innerHTML += data;
-        }
-        GENERATOR_CONTAINER.innerHTML +=
-        `<div class="row">
-            <div class="col">
-                <input
-                    data-i18n="json_mode_button"
-                    type="button" 
-                    class="form-control btn btn-secondary" 
-                    id="btn-jsonForm" 
-                    value="Prefiero generarlo insertando un JSON" 
-                    onclick="showJsonForm('${vword}')"/>
-            </div>
-            <div class="col">
-                <input 
-                    data-i18n="generate_button"
-                    type="button" 
-                    class="form-control btn btn-primary" 
-                    id="btn-generateForm" 
-                    value="¡Listo! Generar crucigrama" 
-                    onclick="generateCustomCrossword()"/>
-            </div>
-        </div>`;
-        _form = true;
-    } else {
-        alert('Algo no anduvo bien... ¿Cargaste la palabra vertical?');
-        VWORD_INPUT.focus();
-        //Para hacer clean del formulario si se intenta crear uno son una VWORD
-        GENERATOR_CONTAINER.innerHTML = '';
-        _form = false;
-    }
-}
-
-function showJsonForm() {
-    var vword = document.getElementById('txt-vword').value.toUpperCase();
-    jsCreator(vword);
-    const jform = document.getElementById('crossword-code');
-    jform.style.visibility = "visible" ;
-}
-
-function generateCustomCrossword() {
-    let VWORD_INPUT = document.getElementById('txt-vword');
-    let vword = VWORD_INPUT.value.toUpperCase();
-    _vword = vword;
-    _answers = [];
-    _refs = [];
-    for(i = 0; i < vword.length; i++)
-    {
-        let ans = document.getElementById(`txt-hword-${i}`).value.toLowerCase();
-        let ref = document.getElementById(`txt-refs-${i}`).value;
-        _answers.push(ans);
-        _refs.push(ref);
-    }
-    drawCrossword(vword, _answers, false);
-    REFERENCES_CONTAINER.innerHTML = '';
-    setCrosswordReferences(_refs, "references");
-}
-
-// Función llamadora - Principal
-function runCPuzzle() {
-    preloadCrossword(); // Cambiar esto al inicio, a la carga del documento x 1ra vez
-    drawCrossword(_vword, _answers, false);
-    setCrosswordReferences(_refs, "references");
-}
-
-// Funcion Generador JSON Base
-function jsCreator(vword) {
-    var refs = [];
-    var answers = [];
-    var cntPal = vword.length;
-
-    // Llenar los arrays con "Referencia X" y "Palabra X" dependiendo de la longitud de la palabra
-    for (var i = 0; i < cntPal; i++) {
-        refs.push("Referencia " + (i + 1));
-        answers.push("Palabra " + (i + 1));
-    }
-
-    // Crear el objeto JSON
-    var result = [
-        {
-            "vword": vword,
-            "refs": refs,
-            "answers": answers
-        }
-    ];
-
-    // Convertir el JSON a cadena formateada
-    var jsonString = JSON.stringify(result, null, 2);
-
-    setTimeout(()=>{
-        console.log("num of inputs :"+numberOfInputs);
-
-    } , 10)
-
-    // Asignar el JSON formateado al contenido del textarea
-    document.getElementById('jsonpuzzle').value = jsonString;
-}
-
-{/* <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
-</div> */}
-
-// Funcionamiento de la configuracion de colores
-
+// Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    const rootStyles = getComputedStyle(document.documentElement);
-    originalColors = {
-        '--c': rootStyles.getPropertyValue('--c').trim(),
-        '--d': rootStyles.getPropertyValue('--d').trim(),
-        '--e': rootStyles.getPropertyValue('--e').trim(),
-        '--f': rootStyles.getPropertyValue('--f').trim(),
-        '--h': rootStyles.getPropertyValue('--h').trim(),
-    };
-
-    // Define el HTML del modal como una cadena
-    const modalConfigHTML = `
-        <div class="modal fade" id="configurationModal" tabindex="-1" data-bs-backdrop="static"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 data-i18n="config_modal_title" class="modal-title fs-5" id="exampleModalLabel">🔩 Configuración</h1>
-            </div>
-            <div class="modal-body">
-                <form class="form" id="colorForm">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                    <label data-i18n="config_vertical_setting" for="colorC" class="form-label">Palabra vertical:</label>
-                    <input type="color" class="form-control form-control-color w-100" id="colorC" name="colorC"
-                        value="#3C096C">
-                    </div>
-                    <div class="col-md-6">
-                    <label data-i18n="config_border_setting" for="colorD" class="form-label">Borde de las celdas:</label>
-                    <input type="color" class="form-control form-control-color w-100" id="colorD" name="colorD"
-                        value="#5A189A">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                    <label data-i18n="config_empty_cell_setting" for="colorE" class="form-label">Celdas vacías:</label>
-                    <input type="color" class="form-control form-control-color w-100" id="colorE" name="colorE"
-                        value="#7B2CBF">
-                    </div>
-                    <div class="col-md-6">
-                    <label data-i18n="config_correct_cell_setting" for="colorF" class="form-label">Palabra correcta/hover:</label>
-                    <input type="color" class="form-control form-control-color w-100" id="colorF" name="colorF"
-                        value="#9D4EDD">
-                    </div>
-                </div>
-                </form>
-            </div>
-            <div class="modal-footer d-flex justify-content-evenly align-items-center">
-                <button data-i18n="config_reset_settings" type="button" class="btn btn-primary d-flex align-items-center" onclick="reiniciarColores()">
-                🔄 Reiniciar valores
-                </button>
-                <button data-i18n="config_save_settings" type="button" class="btn btn-primary d-flex align-items-center" onclick="saveColors()">
-                💽 Guardar cambios
-                </button>
-            </div>
-            </div>
-        </div>
-        </div>
-        `;
-
-    // Inserta el modal en el cuerpo del documento
-    document.body.insertAdjacentHTML('beforeend', modalConfigHTML);
-
+  crossword.init();
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+      const directionKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+      const focusedElement = document.activeElement;
+      
+      if (directionKeys.includes(e.code) && crossword.puzzleContainer.contains(focusedElement)) {
+          e.preventDefault();
+          this.handleKeyboardNavigation(e.code, focusedElement);
+      }
+  });
 });
 
-function updateColorVariable(varName, colorValue) {
-    document.documentElement.style.setProperty(varName, colorValue);
+/**
+ * Handles keyboard navigation between crossword cells
+ * @param {string} key - The keyboard key pressed
+ * @param {HTMLElement} focusedElement - Currently focused input element
+ */
+function handleKeyboardNavigation(key, focusedElement) {
+  const allCells = Array.from(document.querySelectorAll('#cpuzzle .table-secondary input'));
+  const currentIndex = allCells.indexOf(focusedElement);
+  
+  if (currentIndex === -1) return; // Element not found in puzzle
+
+  const puzzleContainer = document.getElementById('cpuzzle');
+  const cellsPerRow = this.GRID_SIZE; // Use the class constant
+  const totalRows = Math.ceil(allCells.length / cellsPerRow);
+
+  // Get current position in grid
+  const currentRow = Math.floor(currentIndex / cellsPerRow);
+  const currentCol = currentIndex % cellsPerRow;
+
+  let nextIndex = currentIndex;
+
+  switch(key) {
+      case 'ArrowLeft':
+          // Move left, wrapping to previous row if needed
+          if (currentCol > 0) {
+              nextIndex = currentIndex - 1;
+          } else if (currentRow > 0) {
+              nextIndex = (currentRow * cellsPerRow) - 1;
+          }
+          break;
+
+      case 'ArrowRight':
+          // Move right, wrapping to next row if needed
+          if (currentCol < cellsPerRow - 1 && currentIndex < allCells.length - 1) {
+              nextIndex = currentIndex + 1;
+          } else if (currentRow < totalRows - 1) {
+              nextIndex = ((currentRow + 1) * cellsPerRow);
+          }
+          break;
+
+      case 'ArrowUp':
+          // Move up to same column in previous row
+          if (currentRow > 0) {
+              const potentialIndex = currentIndex - cellsPerRow;
+              if (potentialIndex >= 0) {
+                  nextIndex = potentialIndex;
+              }
+          }
+          break;
+
+      case 'ArrowDown':
+          // Move down to same column in next row
+          if (currentRow < totalRows - 1) {
+              const potentialIndex = currentIndex + cellsPerRow;
+              if (potentialIndex < allCells.length) {
+                  nextIndex = potentialIndex;
+              }
+          }
+          break;
+
+      case 'Backspace':
+          // Clear current cell and move left
+          if (focusedElement.value === '' && currentIndex > 0) {
+              nextIndex = currentIndex - 1;
+          }
+          focusedElement.value = '';
+          focusedElement.classList.remove('correct-answer', 'wrong-answer');
+          break;
+
+      default:
+          // For letter inputs, auto-advance to next cell
+          if (key.length === 1 && key.match(/[a-z]/i)) {
+              if (currentIndex < allCells.length - 1) {
+                  nextIndex = currentIndex + 1;
+              }
+              // Validate the character immediately
+              const row = Math.floor(currentIndex / cellsPerRow);
+              const col = currentIndex % cellsPerRow;
+              crossword.validateChar(row, col);
+          }
+          return; // Don't change focus for non-navigation keys
+  }
+
+  // Focus the next cell if it exists and is different
+  if (nextIndex !== currentIndex && allCells[nextIndex]) {
+      allCells[nextIndex].focus();
+      
+      // For arrow navigation, select the text in the new cell
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) {
+          allCells[nextIndex].select();
+      }
+  }
 }
-
-document.querySelectorAll('input[type="color"]').forEach(input => {
-    input.addEventListener('input', (e) => {
-        const colorVar = '--' + e.target.name.replace('color', '').toLowerCase();
-        updateColorVariable(colorVar, e.target.value);
-    });
-});
-
-function saveColors() {
-    const form = document.getElementById('colorForm');
-    const formData = new FormData(form);
-
-    formData.forEach((value, key) => {
-        const colorVar = '--' + key.replace('color', '').toLowerCase();
-        updateColorVariable(colorVar, value);
-    });
-
-    const modal = document.getElementById('configurationModal');
-    const modalInstance = bootstrap.Modal.getInstance(modal);
-    modalInstance.hide();
-}
-
-function reiniciarColores() {
-    for (const varName in originalColors) {
-        document.documentElement.style.setProperty(varName, originalColors[varName]);
-    }
-
-    document.querySelectorAll('input[type="color"]').forEach(input => {
-        const colorVar = '--' + input.name.replace('color', '').toLowerCase();
-        input.value = originalColors[colorVar];
-    });
-
-    document.getElementById('return-container').style.display = 'none';
-}
-
 document.addEventListener('keydown', e => {
-    const pressedKey = e.code;
-    const directionKeys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'];
-    const focusedElement = document.activeElement;
-    const secondaryCells = document.querySelectorAll('#cpuzzle .table-secondary input');
-    const cells = document.querySelectorAll('#cpuzzle td');
-    //Discern if pressed key is directional and check if currently focused element is inside the div with id 'cpuzzle'
-    if(directionKeys.includes(pressedKey) && CPUZZLE_CONTAINER.contains(focusedElement)) {
-        //Prevent document scrolling
-        e.preventDefault();
-        //Move focus to the corresponding adjacent element based on the pressed key
-        if(pressedKey==='ArrowLeft') {
-            secondaryCells[[...secondaryCells].indexOf(focusedElement)-1] ?.focus();
-        } else if (pressedKey==='ArrowRight') {
-            secondaryCells[[...secondaryCells].indexOf(focusedElement)+1] ?.focus();
-        } else if (pressedKey==='ArrowDown' &&
-            [...cells].indexOf(focusedElement.parentElement)+36<cells.length &&
-            cells[[...cells].indexOf(focusedElement.parentElement)+36].querySelector(`input`)) {
-            cells[[...cells].indexOf(focusedElement.parentElement)+36] ?.firstElementChild.focus();
-        } else if (pressedKey==='ArrowUp' &&
-            [...cells].indexOf(focusedElement.parentElement)-36>=0 &&
-            cells[[...cells].indexOf(focusedElement.parentElement)-36].querySelector(`input`)) {
-            cells[[...cells].indexOf(focusedElement.parentElement)-36]?.firstElementChild.focus();
-        }
-    }
-})
+  const focusedElement = document.activeElement;
+  if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Backspace'].includes(e.key) || 
+      (e.key.length === 1 && e.key.match(/[a-z]/i))) {
+      if (crossword.puzzleContainer.contains(focusedElement)) {
+          e.preventDefault();
+          crossword.handleKeyboardNavigation(e.key, focusedElement);
+      }
+  }
+});
