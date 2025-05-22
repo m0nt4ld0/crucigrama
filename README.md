@@ -2,12 +2,13 @@
 
 ## **Índice**
 - [Español 🇪🇸](#crucigrama-🇪🇸)
-- [Inglés](#-Crossword)
+- [Inglés](#Crossword)
 
 ## **Crucigrama 🇪🇸 **
-- [Generar tu propio crucigrama](#generar-tu-propio-crucigrama-💡)
+- [Generar tu propio crucigrama](#generar-tu-propio-crucigrama)
 - [Generar tu propio crucigrama utilizando un JSON](#generar-tu-propio-crucigrama-utilizando-un-json)
-- [Imprimir el crucigrama](#imprimir-el-crucigrama-🖨️)
+- [Imprimir el crucigrama](#imprimir-el-crucigrama)
+
 
 ### **Generar tu propio crucigrama** 💡
 
