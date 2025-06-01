@@ -118,11 +118,13 @@ function drawCrossword (vword, ans, showAnswers) {
 function setCrosswordReferences(descriptions, container) {
     let cont = document.getElementById(container);
     cont.innerHTML += `<h3 data-i18n="references_title">Referencias</h3><ol>`;
-    for(s of descriptions) {
-        cont.innerHTML += `<li>${s}</li>`;
-    }
+    descriptions.forEach((desc, index) => {
+        cont.innerHTML += `<li data-i18n="ref_${index}">${desc}</li>`;
+    });
+
     cont.innerHTML += `</ol>`;
 }
+
 
 function validateChar(i, c) {
  
