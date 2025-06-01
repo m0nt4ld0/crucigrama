@@ -1,13 +1,14 @@
 # Crucigrama
 
 ## **Índice**
-- [Español 🇪🇸](#crucigrama-🇪🇸)
-- [Inglés](#-Crossword)
+- [Español 🇪🇸](#crucigrama-)
+- [Inglés](#Crossword)
 
-## **Crucigrama 🇪🇸 **
-- [Generar tu propio crucigrama](#generar-tu-propio-crucigrama-💡)
+### **Crucigrama** 🇪🇸
+- [Generar tu propio crucigrama](#generar-tu-propio-crucigrama-)
 - [Generar tu propio crucigrama utilizando un JSON](#generar-tu-propio-crucigrama-utilizando-un-json)
-- [Imprimir el crucigrama](#imprimir-el-crucigrama-🖨️)
+- [Imprimir el crucigrama](#imprimir-el-crucigrama-)
+
 
 ### **Generar tu propio crucigrama** 💡
 
@@ -66,6 +67,7 @@ Este JSON dará lugar al siguiente crucigrama:
 ![image](https://github.com/user-attachments/assets/c9478e37-1f0a-4a0e-9260-5c45e713d6e3)
 
 ### **Imprimir el crucigrama** 🖨️
+
 Una vez cargado el crucigrama personalizado, podremos imprimirlo haciendo clic en el botón correspondiente. Nos va a abrir una nueva página en blanco, con el crucigrama para completarlo y sus referencias. Podemos imprimirlo, o guardarlo en nuestro equipo como un documento PDF.
 
 Clic en el botón **Imprimir**
