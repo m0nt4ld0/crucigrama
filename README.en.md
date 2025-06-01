@@ -1,14 +1,14 @@
-
 # Crossword
 
 ## **Index**
-- [Español 🇪🇸](#crucigrama-🇪🇸)
-- [English](#-crossword)
+- [Español 🇪🇸](README.md)
+- [Français 🇫🇷](README.fr.md)
+- [English 🇬🇧](#crossword-)
 
-## **Crossword 🇬🇧 **
-- [Generate your own crossword](#generate-your-own-crossword-💡)
+## Crossword 🇬🇧
+- [Generate your own crossword 💡](#generate-your-own-crossword-)
 - [Generate your own crossword using a JSON](#generate-your-own-crossword-using-a-json)
-- [Print the crossword](#print-the-crossword-🖨️)
+- [Print the crossword 🖨️](#print-the-crossword)
 
 ### **Generate your own crossword** 💡
 
@@ -67,7 +67,8 @@ This JSON will create the following crossword:
 
 ![image](https://github.com/user-attachments/assets/c9478e37-1f0a-4a0e-9260-5c45e713d6e3)
 
-### **Print the crossword** 🖨️
+### Print the crossword
+
 Once your custom crossword is loaded, you can print it by clicking the corresponding button. It will open a new blank page with the crossword to fill in and its clues. You can print it or save it on your device as a PDF.
 
 Click the **Print** button  
