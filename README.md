@@ -1,8 +1,10 @@
 # Crucigrama
 
 ## **Índice**
-- [Español 🇪🇸](#crucigrama-)
-- [Inglés](#Crossword)
+- [Español 🇦🇷](#crucigrama-)
+- [Français 🇫🇷](README.fr.md)
+- [English 🇬🇧](README.en.md)
+
 
 ### **Crucigrama** 🇪🇸
 - [Generar tu propio crucigrama](#generar-tu-propio-crucigrama-)
