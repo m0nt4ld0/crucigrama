@@ -21,11 +21,11 @@ export const AppProvider = ({ children }) => {
             "defensa"
         ]
     }
-    
+
 
     // {boolean} showAnswers - State to show or hide answers.
     const [showAnswers, setShowAnswers] = useState(false);
-    
+
 
     // {Array<string>} answers - Array of answers for the puzzle.
     const [answers, setAnswers] = useState(puzzleJSON["answers"]);
@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
     const [refs, setRefs] = useState(puzzleJSON["refs"]);
 
 
-    
+
     // {Object} original_colors - Ref object containing original color variables.
     const original_colors = useRef({
         '--c': '#3C096C',
@@ -48,20 +48,20 @@ export const AppProvider = ({ children }) => {
 
     // {Object} colors - Object containing color variables.
     const [colors, setColors] = useState(original_colors.current);
-    
+
 
 
     // {string} lang - The current language setting.
-    const [lang, setLang] = useState(localStorage.getItem('language'));
-
+    // defaults to 'en' if not set in localStorage.
+    const [lang, setLang] = useState(localStorage.getItem('language') || 'en');
 
 
     // {number} timerDuration - Duration of the puzzle timer in seconds.
     const timerDuration = 300; // 5 minutes (for puzzle timer)
-    
+
     // {Object|null} timerRef - Reference to the timer object.
     const [timerRef, setTimerRef] = useState(null);
-    
+
 
 
     // The AppContext.Provider component with provided values.

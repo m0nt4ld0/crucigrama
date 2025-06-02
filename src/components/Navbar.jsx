@@ -22,10 +22,10 @@ const Navbar = () => {
                         Crucigrama | Crossword Puzzle
                     </a>
                     <div className="langauge-selection">
-                        <button className={"language-btn " +(lang=='es'? "active-btn" : '')} onClick={() => setLang('es')}>
+                        <button className={"language-btn " + (lang == 'es' ? "active-btn" : '')} onClick={() => setLang('es')}>
                             Spanish
                         </button>
-                        <button className={"language-btn " + (lang=='en'? "active-btn" : '')} onClick={() => setLang('en')}>
+                        <button className={"language-btn " + (lang == 'en' ? "active-btn" : '')} onClick={() => setLang('en')}>
                             English
                         </button>
                     </div>

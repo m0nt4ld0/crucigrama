@@ -23,14 +23,13 @@
 export function updateContent(langData) {
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        if (element.tagName == "INPUT"){
+        if (element.tagName == "INPUT") {
             element.value = langData[key];
         } else if (element.tagName == "SMALL") {
             element.textContent = langData[key];
         } else {
             element.innerHTML = langData[key];
         };
-
     });
 }
 
@@ -40,13 +39,13 @@ export const translation = {
     en: {
         personalized_puzzle_title: 'Personalized Crossword Puzzle',
         personalized_puzzle_message: 'Next, you can generate your own crossword puzzle, with the words you choose. <br> First, enter which word will be displayed vertically:',
-        configuration_button_text : '🔩 Settings',
+        configuration_button_text: '🔩 Settings',
         print_button: '🖨️ Print',
         view_answers_button: '🔎 View Answers',
         restart_button: '♻️ Restart',
-        references_title : 'References',
+        references_title: 'References',
         start_button: '🚀 Start!',
-        generate_button : 'Ready! Generate crossword',
+        generate_button: 'Ready! Generate crossword',
         json_mode_button: 'I prefer to generate it by inserting a JSON',
         example_message: 'In the example crossword puzzle, the vertical word is "FREUD".',
         load_json_button: '🚀 Load',
@@ -62,11 +61,11 @@ export const translation = {
         rightPlaceholderOne: "Reference to the word #",
         rightPlaceholderTwo: "which contains the letter",
     },
-    
+
     es: {
         personalized_puzzle_title: 'Crucigrama personalizado',
         personalized_puzzle_message: 'A continuación, podés generar tu propio crucigrama, con las palabras que vos elijas. <br> Primero, ingresá cuál va a ser la palabra a mostrar de manera vertical:',
-        configuration_button_text : '🔩 Configuración',
+        configuration_button_text: '🔩 Configuración',
         print_button: '🖨️ Imprimir',
         view_answers_button: '🔎 Ver Respuestas',
         restart_button: '♻️ Reiniciar',
