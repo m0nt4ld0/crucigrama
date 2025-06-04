@@ -24,7 +24,7 @@ const PersonalisedPuzzleContainer = () => {
             }
             setJsonForm(JSON.stringify(jsonData, null, 2));
 
-            setCurrForm(<PersonalisedPuzzleForm {...{ vwordInput, setShowJsonText }} />);
+            setCurrForm(<PersonalisedPuzzleForm key={vwordInput} {...{ vwordInput, setShowJsonText }} />);
         } else {
             alert('Something went wrong... Did you load the vertical word?');
             // To clean the form if trying to create one without a VWORD
@@ -86,9 +86,14 @@ const PersonalisedPuzzleForm = ({ vwordInput, setShowJsonText, generateCustomCro
     let rightPlaceholderOne = "Reference for word #";
     let rightPlaceholderTwo = "containing the letter";
 
-    const { setVword, setRefs, setAnswers } = useContext(AppContext)
+    const { setVword, setRefs, setAnswers, vword, refs, answers } = useContext(AppContext)
     const [inputAnswers, setInputAnswers] = useState(Array(vwordInput.length).fill(''))
     const [inputRefs, setInputRefs] = useState(Array(vwordInput.length).fill(''))
+
+    useEffect(() => {
+        setInputAnswers(Array(vwordInput.length).fill(''));
+        setInputRefs(Array(vwordInput.length).fill(''));
+    }, [vwordInput]);
 
     // Function to generate the custom crossword by setting the vertical word, references, and answers.
     function generateCustomCrossword() {

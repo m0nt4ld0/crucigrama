@@ -36,8 +36,6 @@ export const AppProvider = ({ children }) => {
     // {Array<string>} refs - Array of reference clues for the puzzle.
     const [refs, setRefs] = useState(puzzleJSON["refs"]);
 
-
-
     // {Object} original_colors - Ref object containing original color variables.
     const original_colors = useRef({
         '--c': '#3C096C',

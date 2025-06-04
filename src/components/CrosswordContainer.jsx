@@ -38,12 +38,12 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
     // To be executed when the crossword is completed.
     // Stops the timer and displays a congratulatory alert.
     useEffect(() => {
-      if(isCorrect.every(value => value === true)){
-        stopTimerHandler(timerRef, setTimerRef);
-        alert("Congrats! You finished the crossword.");
-      }
+        if (isCorrect.every(value => value === true)) {
+            stopTimerHandler(timerRef, setTimerRef);
+            alert("Congrats! You finished the crossword.");
+        }
     }, [isCorrect])
-    
+
 
     // Initializes input answers based on vertical word and letters' position in each answer.
     useEffect(() => {
@@ -61,32 +61,37 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
 
     return (<form ref={contentRef} className='puzzle-form' style={{ gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
         {answers.map((rowWord, i) => {
-            let charIndex = rowWord.toLowerCase().indexOf(vword[i].toLowerCase())
+            try {
+                let charIndex = rowWord.toLowerCase().indexOf(vword[i].toLowerCase())
 
-            // initial position where the words start to be written in the horizontal row
-            let currInitPosition = maxInitPosition - charIndex;
+                // initial position where the words start to be written in the horizontal row
+                let currInitPosition = maxInitPosition - charIndex;
 
-            // rendering a row (i.e. a horizontal word)
-            // j iterator for horizontal words
-            return (
-                Array(rowWord.length).fill(0).map((_, j) => {
-                    let correctValue = rowWord[j];
-                    let defaultValue = inputAns[i][j];
+                // rendering a row (i.e. a horizontal word)
+                // j iterator for horizontal words
+                return (
+                    Array(rowWord.length).fill(0).map((_, j) => {
+                        let correctValue = rowWord[j];
+                        let defaultValue = inputAns[i]? inputAns[i][j] : '';
 
-                    // input cell of the puzzle form grid (where letter is entered)
-                    return (<input
-                        key={`${i}-${j}`}
-                        className={'puzzle-cell ' + (isCorrect[i] ? 'correct-answer' : '')}
-                        style={{ gridRow: i + 1, gridColumn: currInitPosition + j + 1, ...colors }}
-                        value={showAnswers || (j == charIndex) ? correctValue : defaultValue}
-                        onChange={(e) => handleInputChange(e, i, j)}
-                        disabled={j == charIndex}
-                        maxLength={1}
-                        ref={el => { inputRefs ? inputRefs.current[i][currInitPosition + j] = el : '' }}
-                        onKeyDown={(e) => { handleKeyDown ? handleKeyDown(e, i, currInitPosition + j) : '' }}
-                    />)
-                })
-            )
+                        // input cell of the puzzle form grid (where letter is entered)
+                        return (<input
+                            key={`${i}-${j}`}
+                            className={'puzzle-cell ' + (isCorrect[i] ? 'correct-answer' : '')}
+                            style={{ gridRow: i + 1, gridColumn: currInitPosition + j + 1, ...colors }}
+                            value={showAnswers || (j == charIndex) ? correctValue : defaultValue}
+                            onChange={(e) => handleInputChange(e, i, j)}
+                            disabled={j == charIndex}
+                            maxLength={1}
+                            ref={el => { inputRefs ? inputRefs.current[i][currInitPosition + j] = el : '' }}
+                            onKeyDown={(e) => { handleKeyDown ? handleKeyDown(e, i, currInitPosition + j) : '' }}
+                        />)
+                    })
+                )
+            } catch (error) {
+                console.error(`Error rendering row ${i}:`, error);
+                return null; // Return null if there's an error in rendering the row
+            }
         })}
     </form>)
 }
