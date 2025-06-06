@@ -61,7 +61,7 @@ const PersonalisedPuzzleContainer = () => {
                     </div>
                     <div className="col">
                         <input data-i18n="start_button" type="button" className="form-control btn btn-primary" id="btn-loadGenForm"
-                            value="🚀 ¡Vamos!" onClick={handleGenerateForm} />
+                            value="🚀 Start!" onClick={handleGenerateForm} />
                     </div>
                 </div>
 

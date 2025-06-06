@@ -7,7 +7,7 @@ import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/t
 
 // PuzzleFormContainer component renders the form and controls for the crossword puzzle.
 // It includes buttons to restart the puzzle, view answers, print the puzzle, and control the timer.
-const PuzzleFormContainer = () => {
+const PuzzleFormContainer = ({ restartCrossword }) => {
     const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext)
     const [timeLeft, setTimeLeft] = useState(0); // 5 minutes in seconds
 
@@ -31,9 +31,9 @@ const PuzzleFormContainer = () => {
     return (
         <>
             <form className="container-sm" id="cpuzzle-options">
-                <input data-i18n="restart_button" type="button" className="btn btn-primary" id="btn-restart" value="♻️ Reiniciar" onClick={() => setShowAnswers(false)} />
-                <input data-i18n="view_answers_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🔎 Ver Respuestas" onClick={() => setShowAnswers(true)} />
-                <input data-i18n="print_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🖨️ Imprimir" onClick={reactToPrintFn} />
+                <input data-i18n="restart_button" type="button" className="btn btn-primary" id="btn-restart" value="♻️ Restart" onClick={() => restartCrossword()} />
+                <input data-i18n="view_answers_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🔎 Show Answers" onClick={() => setShowAnswers(true)} />
+                <input data-i18n="print_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🖨️ Print" onClick={reactToPrintFn} />
 
                 <div id="timer-container">
                     <span>Time Left: </span><span id="timer">
@@ -56,7 +56,7 @@ const PuzzleFormContainer = () => {
 
                 <button data-i18n="configuration_button_text" type="button" className="btn btn-primary" id="btn-config"
                     data-bs-toggle="modal" data-bs-target="#configurationModal">
-                    🔩 Configuración
+                    🔩 Settings
                 </button>
 
             </form>

@@ -6,7 +6,8 @@ import { stopTimerHandler } from '../scripts/timer-crossword';
 export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRefs }) => {
     const { vword, colors, answers, refs, timerRef, setTimerRef } = useContext(AppContext)
     const [inputAns, setInputAns] = useState(answers.map((rowWord) => Array(rowWord.length).fill('')))
-    const [isCorrect, setIsCorrect] = useState(Array(answers.length).fill(false))
+    const [isCorrect, setIsCorrect] = useState(false)
+    // const [isCorrect, setIsCorrect] = useState(Array(answers.length).fill(false))
 
     // Finds the maximum initial position of the vertical word in the answers.
     const findMaxInit = () => {
@@ -25,20 +26,21 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
         const newAnswers = [...inputAns];
         newAnswers[i][j] = newValue;
         setInputAns(newAnswers);
-        validateWord(i, answers[i], inputAns[i].join(''));
+        setIsCorrect(validateWord(newAnswers, answers));
     };
 
-    // Validates if the input word matches the correct answer.
-    const validateWord = (i, word1, word2) => {
-        const newIsCorrect = [...isCorrect]
-        newIsCorrect[i] = (word1.toLowerCase() == word2.toLowerCase());
-        setIsCorrect(newIsCorrect);
+    // Validates if the input words matches the correct answers.
+    const validateWord = (inputAns, answers) => {
+        return inputAns.every((rowWord, i) => {
+            return rowWord.join('').toLowerCase() == answers[i].toLowerCase();
+        })
     }
 
     // To be executed when the crossword is completed.
     // Stops the timer and displays a congratulatory alert.
     useEffect(() => {
-        if (isCorrect.every(value => value === true)) {
+        // console.log("Crossword completed successfully!", isCorrect);
+        if (isCorrect) {
             stopTimerHandler(timerRef, setTimerRef);
             alert("Congrats! You finished the crossword.");
         }
@@ -72,12 +74,12 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
                 return (
                     Array(rowWord.length).fill(0).map((_, j) => {
                         let correctValue = rowWord[j];
-                        let defaultValue = inputAns[i]? inputAns[i][j] : '';
+                        let defaultValue = inputAns[i] ? inputAns[i][j] : '';
 
                         // input cell of the puzzle form grid (where letter is entered)
                         return (<input
                             key={`${i}-${j}`}
-                            className={'puzzle-cell ' + (isCorrect[i] ? 'correct-answer' : '')}
+                            className={'puzzle-cell ' + (isCorrect ? 'correct-answer' : '')}
                             style={{ gridRow: i + 1, gridColumn: currInitPosition + j + 1, ...colors }}
                             value={showAnswers || (j == charIndex) ? correctValue : defaultValue}
                             onChange={(e) => handleInputChange(e, i, j)}

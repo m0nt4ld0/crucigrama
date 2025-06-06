@@ -13,7 +13,13 @@ import { AppContext } from './AppProvider.jsx'
 // Main App component that renders the entire application.
 // It includes the Navbar, main container with crossword progress, crossword puzzle, puzzle form, references, personalized puzzle container, footer, and color configuration.
 function App() {
-  const { refs, answers } = useContext(AppContext)
+  const { refs, answers, setShowAnswers } = useContext(AppContext)
+  const [crossword, setCrossword] = useState(0) // State to restart the crossword puzzle
+
+  const restartCrossword = () => {
+    setShowAnswers(false) // Hide answers when restarting
+    setCrossword(crossword + 1) // Increment to trigger a re-render
+  }
 
   return (
     <>
@@ -38,10 +44,9 @@ function App() {
         <div className="m-2"></div>
 
         {/* Crossword */}
-        <CrosswordContainer />
+        <CrosswordContainer key={crossword} />
 
-
-        <PuzzleFormContainer />
+        <PuzzleFormContainer restartCrossword={restartCrossword} />
 
         <br />
         <div className="container-sm" id="references">
