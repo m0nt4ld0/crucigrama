@@ -3,11 +3,11 @@ import { AppContext } from '../AppProvider';
 import { stopTimerHandler } from '../scripts/timer-crossword';
 
 // DrawCrossword component renders the crossword puzzle form.
-export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRefs }) => {
-    const { vword, colors, answers, refs, timerRef, setTimerRef } = useContext(AppContext)
+export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
+    const { vword, answers, colors, refs, timerRef, setTimerRef } = useContext(AppContext)
     const [inputAns, setInputAns] = useState(answers.map((rowWord) => Array(rowWord.length).fill('')))
-    const [isCorrect, setIsCorrect] = useState(false)
-    // const [isCorrect, setIsCorrect] = useState(Array(answers.length).fill(false))
+    const [isCorrect, setIsCorrect] = useState(Array(answers.length).fill(false))
+
 
     // Finds the maximum initial position of the vertical word in the answers.
     const findMaxInit = () => {
@@ -26,25 +26,29 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
         const newAnswers = [...inputAns];
         newAnswers[i][j] = newValue;
         setInputAns(newAnswers);
-        setIsCorrect(validateWord(newAnswers, answers));
+        validateWord(i, newAnswers[i].join(''), answers[i]);
     };
 
-    // Validates if the input words matches the correct answers.
-    const validateWord = (inputAns, answers) => {
-        return inputAns.every((rowWord, i) => {
-            return rowWord.join('').toLowerCase() == answers[i].toLowerCase();
-        })
+    // Validates if the input word matches the correct answer.
+    const validateWord = (i, word1, word2) => {
+        const newIsCorrect = [...isCorrect]
+        newIsCorrect[i] = (word1.toLowerCase() == word2.toLowerCase());
+        setIsCorrect(newIsCorrect);
     }
 
     // To be executed when the crossword is completed.
     // Stops the timer and displays a congratulatory alert.
     useEffect(() => {
-        // console.log("Crossword completed successfully!", isCorrect);
-        if (isCorrect) {
+        if (isCorrect.every(value => value === true)) {
             stopTimerHandler(timerRef, setTimerRef);
             alert("Congrats! You finished the crossword.");
         }
     }, [isCorrect])
+
+    // Resets the isCorrect state when answers change.
+    useEffect(() => {
+        setIsCorrect(Array(answers.length).fill(false));
+    }, [answers]);
 
 
     // Initializes input answers based on vertical word and letters' position in each answer.
@@ -61,7 +65,7 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
         setInputAns(newInputAns);
     }, [answers, vword]);
 
-    return (<form ref={contentRef} className='puzzle-form' style={{ gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
+    return (<form className='puzzle-form' style={{ gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
         {answers.map((rowWord, i) => {
             try {
                 let charIndex = rowWord.toLowerCase().indexOf(vword[i].toLowerCase())
@@ -79,7 +83,7 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
                         // input cell of the puzzle form grid (where letter is entered)
                         return (<input
                             key={`${i}-${j}`}
-                            className={'puzzle-cell ' + (isCorrect ? 'correct-answer' : '')}
+                            className={'puzzle-cell ' + (isCorrect[i] ? 'correct-answer' : '')}
                             style={{ gridRow: i + 1, gridColumn: currInitPosition + j + 1, ...colors }}
                             value={showAnswers || (j == charIndex) ? correctValue : defaultValue}
                             onChange={(e) => handleInputChange(e, i, j)}
@@ -121,7 +125,11 @@ const CrosswordContainer = () => {
 
     return (
         <div className="container-md actual" id="cpuzzle">
-            <DrawCrossword showAnswers={showAnswers} handleKeyDown={handleKeyDown} inputRefs={inputRefs} />
+            <DrawCrossword
+                showAnswers={showAnswers}
+                handleKeyDown={handleKeyDown}
+                inputRefs={inputRefs}
+            />
         </div>
     )
 }
