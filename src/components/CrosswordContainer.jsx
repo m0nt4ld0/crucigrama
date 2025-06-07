@@ -3,10 +3,11 @@ import { AppContext } from '../AppProvider';
 import { stopTimerHandler } from '../scripts/timer-crossword';
 
 // DrawCrossword component renders the crossword puzzle form.
-export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRefs }) => {
-    const { vword, colors, answers, refs, timerRef, setTimerRef } = useContext(AppContext)
+export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
+    const { vword, answers, colors, refs, timerRef, setTimerRef } = useContext(AppContext)
     const [inputAns, setInputAns] = useState(answers.map((rowWord) => Array(rowWord.length).fill('')))
     const [isCorrect, setIsCorrect] = useState(Array(answers.length).fill(false))
+
 
     // Finds the maximum initial position of the vertical word in the answers.
     const findMaxInit = () => {
@@ -25,7 +26,7 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
         const newAnswers = [...inputAns];
         newAnswers[i][j] = newValue;
         setInputAns(newAnswers);
-        validateWord(i, answers[i], inputAns[i].join(''));
+        validateWord(i, newAnswers[i].join(''), answers[i]);
     };
 
     // Validates if the input word matches the correct answer.
@@ -44,6 +45,11 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
         }
     }, [isCorrect])
 
+    // Resets the isCorrect state when answers change.
+    useEffect(() => {
+        setIsCorrect(Array(answers.length).fill(false));
+    }, [answers]);
+
 
     // Initializes input answers based on vertical word and letters' position in each answer.
     useEffect(() => {
@@ -59,7 +65,7 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
         setInputAns(newInputAns);
     }, [answers, vword]);
 
-    return (<form ref={contentRef} className='puzzle-form' style={{ gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
+    return (<form className='puzzle-form' style={{ gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
         {answers.map((rowWord, i) => {
             try {
                 let charIndex = rowWord.toLowerCase().indexOf(vword[i].toLowerCase())
@@ -72,7 +78,7 @@ export const DrawCrossword = ({ contentRef, showAnswers, handleKeyDown, inputRef
                 return (
                     Array(rowWord.length).fill(0).map((_, j) => {
                         let correctValue = rowWord[j];
-                        let defaultValue = inputAns[i]? inputAns[i][j] : '';
+                        let defaultValue = inputAns[i] ? inputAns[i][j] : '';
 
                         // input cell of the puzzle form grid (where letter is entered)
                         return (<input
@@ -119,7 +125,11 @@ const CrosswordContainer = () => {
 
     return (
         <div className="container-md actual" id="cpuzzle">
-            <DrawCrossword showAnswers={showAnswers} handleKeyDown={handleKeyDown} inputRefs={inputRefs} />
+            <DrawCrossword
+                showAnswers={showAnswers}
+                handleKeyDown={handleKeyDown}
+                inputRefs={inputRefs}
+            />
         </div>
     )
 }
