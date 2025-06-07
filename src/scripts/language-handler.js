@@ -60,6 +60,11 @@ export const translation = {
         leftPlaceholderTwo: "answer, word #",
         rightPlaceholderOne: "Reference to the word #",
         rightPlaceholderTwo: "which contains the letter",
+        ref_0: "Ancient pseudoscientific theory, now invalid, that claimed to determine character and personality traits based on the shape of the skull and facial features.",
+        ref_1: "A force that during analysis 'defends itself by all means against healing and at all costs wants to cling to illness and suffering.'",
+        ref_2: "Complex of...",
+        ref_3: "A constantly flowing source of stimuli, coming from an internal excitation (as opposed to an external stimulus) and linked to an object, which is transitory. Its satisfaction is partial.",
+        ref_4: "Projection, introjection, projective identification—these are all mechanisms of..."
     },
 
     es: {
@@ -86,6 +91,11 @@ export const translation = {
         leftPlaceholderTwo: "respuesta, palabra #",
         rightPlaceholderOne: "Referencia pzara la palabra #",
         rightPlaceholderTwo: "que contiene la letra",
+        ref_0: "Antigua teoría pseudocientífica, hoy sin validez, que afirmaba poder determinar rasgos del cáracter y de la personalidad basándose en la forma del cráneo y las facciones.",
+        ref_1: "Fuerza que durante el análisis «se defiende por todos los medios contra la curación y a toda costa quiere aferrarse a la enfermedad y el padecimiento»",
+        ref_2:"Complejo de...",
+        ref_3: "Fuente de estímulos en constante fluir, procedente de una excitación interna (a diferencia del estímulo que es externo) y está ligada a un objeto, el cual es transitorio. Su satisfacción es parcial.",
+        ref_4: "Proyección, introyección, identificación proyectiva, todos estos son mecanismos de..."
     },
 }
 

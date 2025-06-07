@@ -1,61 +1,80 @@
-# 📖 Crucigrama (Crossword Puzzle App) - React Version  
+# Crucigrama
 
-## 🚀 About the Project  
-This project is a **crossword puzzle generator** that allows users to create **personalized crossword puzzles** dynamically. The app has been **completely rewritten in ReactJS**, improving its **security, reusability, and scalability** while maintaining the original UI and functionality.  
+## **Índice**
+- [Español 🇦🇷](#crucigrama-)
+- [Français 🇫🇷](README.fr.md)
+- [English 🇬🇧](README.en.md)
 
----
 
-## 🎯 Features  
-✅ **Create Custom Crosswords** – Users can generate puzzles manually or via JSON input.  
-✅ **Dynamic Grid Rendering** – Crossword cells are rendered dynamically instead of using static tables.  
-✅ **State Management with Context API** – Manages crossword logic, themes, and language settings globally.  
-✅ **Preserved UI & Styling** – The existing HTML/CSS structure is retained, with future enhancements planned using TailwindCSS.  
+### **Crucigrama** 🇪🇸
+- [Generar tu propio crucigrama](#generar-tu-propio-crucigrama-)
+- [Generar tu propio crucigrama utilizando un JSON](#generar-tu-propio-crucigrama-utilizando-un-json)
+- [Imprimir el crucigrama](#imprimir-el-crucigrama-)
 
----
 
-## 🔧 Getting Started  
+### **Generar tu propio crucigrama** 💡
 
-### **1️⃣ Prerequisites**  
-Ensure you have the following installed:  
-- [Node.js](https://nodejs.org/) (v14 or later)  
-- npm or yarn  
+Escribir la palabra que se deberá mostrar de forma vertical y, a continuación, hacer clic en el botón **🚀¡Vamos!**
 
----
+![image](https://github.com/user-attachments/assets/98f0cb78-671c-40be-9a90-c68a7f5fdb4d)
 
-### **2️⃣ Installation**  
+Se van a desplegar dos cuadros de texto por cada letra de la palabra:
 
-Clone the repository and install dependencies:  
-```bash
-git clone https://github.com/m0nt4ld0/crucigrama
-cd Crucigrama  
-npm install  
-```
+![image](https://github.com/user-attachments/assets/3caaa2f5-36b9-478e-be74-3a785afb53c3)
 
-### **3️⃣ Running the App**
-To start the development server:
+- A la _izquierda_, vamos a ingresar cuál es la _palabra_ que debemos adivinar (la respuesta).
+- A la _derecha_, vamos a ingresar la _descripción_, que funcionará como pista.
 
-```bash
-npm run dev
-```
-The app will be available at http://localhost:5173/ or the link shown in the terminal.
+También se puede [generar tu propio crucigrama utilizando un JSON](#generar-tu-propio-crucigrama-utilizando-un-json), en lugar de ingresar manualmente cada palabra y su descripción.
 
-### **4️⃣ Folder Structure**
-```bash
-/src  
-  ├── assets
-  ├── components  
-  │   ├── CrosswordPuzzle.js  
-  │   ├── PersonalizedPuzzleContainer.js  
-  │   ├── ColorConfiguration.js  
-  │   └── ...  
-  ├── scripts
-  │   ├── language-handler.js
-  │   ├── timer-crossword.js
-  ├── styles
-  │   ├── main.css
-  ├── App.jsx   
-  ├── AppProvider.jsx  
-  ├── index.css 
-  └── main.jsx
+### **Generar tu propio crucigrama utilizando un JSON**
+
+Con esta herramienta podremos cargar la estructura deseada para armar nuestro propio **crucigrama personalizado**. El crucigrama debe respetar el **formato JSON**, con la estructura que se presenta a continuación. También, se incluye un JSON de ejemplo. Con sólo modificar los valores del JSON de ejemplo, se puede obtener un nuevo crucigrama.
+
+Accede a la herramienta [haciendo clic aquí](https://m0nt4ld0.github.io/crucigrama/).
+
+![image](https://github.com/user-attachments/assets/d6b948e3-97ff-4738-8f10-0515ac57b297)
+
+El JSON a insertar debe contener el siguiente formato:
+
+- **vword**: Es la palabra a modo de "pista" que se muestra verticalmente.
+- **refs**: Arreglo con las referencias del crucigrama (descripciones a modo de "pista" para que el jugador intente adivinar la palabra.
+- **answers**: Arreglo con las palabras de respuesta.
+
+A continuación, se presenta un ejemplo:
 
 ```
+[
+  {
+     "vword": "Freud",
+     "refs": [
+        "Antigua teoría pseudocientífica, hoy sin validez, que afirmaba poder determinar rasgos del cáracter y de la personalidad basándose en la forma del cráneo y las facciones.",
+        "Fuerza que durante el análisis «se defiende por todos los medios contra la curación y a toda costa quiere aferrarse a la enfermedad y el padecimiento»",
+        "Complejo de...",
+        "Fuente de estímulos en constante fluir, procedente de una excitación interna (a diferencia del estímulo que es externo) y está ligada a un objeto, el cual es transitorio. Su satisfacción es parcial.",
+        "Proyección, introyección, identificación proyectiva, todos estos son mecanismos de..."
+     ],
+     "answers": [
+        "frenologia",
+        "resistencia",
+        "edipo",
+        "pulsion",
+        "defensa"       
+     ]
+  }
+]
+```
+Este JSON dará lugar al siguiente crucigrama:
+
+![image](https://github.com/user-attachments/assets/c9478e37-1f0a-4a0e-9260-5c45e713d6e3)
+
+### **Imprimir el crucigrama** 🖨️
+
+Una vez cargado el crucigrama personalizado, podremos imprimirlo haciendo clic en el botón correspondiente. Nos va a abrir una nueva página en blanco, con el crucigrama para completarlo y sus referencias. Podemos imprimirlo, o guardarlo en nuestro equipo como un documento PDF.
+
+Clic en el botón **Imprimir**
+![image](https://github.com/user-attachments/assets/e7f20174-c0e0-4fe5-b842-3612a6768fd7)
+
+Se abre la siguiente página, para la impresión. En el cuadro de selección de la derecha podemos alternar entre imprimirlo (con nuestra impresora instalada y configurada) o guardarlo como PDF.
+
+![image](https://github.com/user-attachments/assets/12a88238-b609-42be-a203-69f1f96f4de0)
