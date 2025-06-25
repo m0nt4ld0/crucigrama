@@ -30,7 +30,7 @@ const ColorConfiguration = () => {
     }
 
     return (
-        <div className="modal fade" id="configurationModal" tabIndex="-1" data-bs-backdrop="static"
+        <div className="text-white modal fade" id="configurationModal" tabIndex="-1" data-bs-backdrop="static"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content">
@@ -38,7 +38,7 @@ const ColorConfiguration = () => {
                         <h1 data-i18n="config_modal_title" className="modal-title fs-5" id="exampleModalLabel">🔩 Configuración</h1>
                     </div>
                     <div className="modal-body">
-                        <form className="form" id="colorForm">
+                        <form className="form " id="colorForm">
                             <div className="row mb-3">
                                 <div className="col-md-6">
                                     <label data-i18n="config_vertical_setting" htmlFor="colorC" className="form-label">Palabra vertical:</label>

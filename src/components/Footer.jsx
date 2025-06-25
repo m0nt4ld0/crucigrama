@@ -3,7 +3,7 @@ import React from 'react'
 // Footer Component
 const Footer = () => {
     return (
-        <footer>
+        <footer className='mb-4'>
             2024 - Mariela Montaldo.
             <a target="_blank" href="https://icons8.com/icon/rue7kq0Pgo0B/crossword">Crossword</a>
             icon by
