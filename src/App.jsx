@@ -26,13 +26,15 @@ function App() {
       {/* Navigation Bar */}
       <Navbar />
 
-      <div className="container-fluid" id="mainContainer">
-        <div className="crossword-container d-flex flex-column">
-          <div className="d-flex justify-content-center">
-            <h2>Crossword Completion Progress</h2>
+      <div className="min-h-screen overflow-scroll bg-gradient-to-b from-slate-800 to-slate-800"
+
+ >
+        <div className='flex flex-col'>
+          <div className='pt-5 m-5'>
+            <h2 className='text-3xl underline underline-offset-2 font-medium text-white '>Crossword Completion Progress</h2>
           </div>
-          <div className="h-100 d-flex align-items-center justify-content-center">
-            <div className="progress" style={{ width: '60%' }}>
+          <div className='flex gap-3' >
+            <div  className='text-white'>
               <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                 aria-label="Animated striped example" style={{ width: '0%' }} aria-valuenow="21" aria-valuemin="0"
                 aria-valuemax="35"></div>
@@ -49,10 +51,10 @@ function App() {
         <PuzzleFormContainer restartCrossword={restartCrossword} />
 
         <br />
-        <div className="container-sm" id="references">
-          <h3 data-i18n="references_title">Referencias</h3>
+        <div className="text-white ml-2 p-3" id="references">
+          <h3 className='underline text-2xl font-medium ' data-i18n="references_title">Referencias</h3>
 
-          <ul>
+          <ul className='p-3'>
             {refs.map((s, i) => {
               return <li key={i}>{s}</li>
             })}
@@ -62,12 +64,15 @@ function App() {
         <br />
         {/* Personalized Crossword Container */}
         <PersonalisedPuzzleContainer />
-      </div >
 
-      {/* Footer */}
+
+        {/* Footer */}
       < Footer />
 
       <ColorConfiguration />
+      </div >
+
+      
     </>
   )
 }

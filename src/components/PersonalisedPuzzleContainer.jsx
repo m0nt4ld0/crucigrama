@@ -33,9 +33,9 @@ const PersonalisedPuzzleContainer = () => {
     }
 
     return (
-        <div className="container-sm">
-            <h3 data-i18n="personalized_puzzle_title">Crucigrama personalizado</h3>
-            <p data-i18n="personalized_puzzle_message">
+        <div className="text-white ml-2 p-3 flex flex-col">
+            <h3 className='underline text-2xl font-medium ' data-i18n="personalized_puzzle_title">Crucigrama personalizado</h3>
+            <p className='p-3' data-i18n="personalized_puzzle_message">
                 A continuación, podés generar tu propio crucigrama, con las palabras
                 que vos elijas. <br />
                 Primero, ingresá cuál va a ser la palabra a mostrar de manera
@@ -48,19 +48,19 @@ const PersonalisedPuzzleContainer = () => {
                     <div className="col">
                         <input
                             type="text"
-                            className="form-control"
+                            className="form-control p-3"
                             placeholder="Palabra vertical (pista)"
                             value={vwordInput}
                             onChange={(e) => setVwordInput(e.target.value.toUpperCase())}
                             id="txt-vword"
                             aria-describedby="crosswordsGenBlock"
                         />
-                        <small data-i18n="example_message" id="crosswordsGenBlock" className="form-text text-muted">
+                        <small data-i18n="example_message" id="crosswordsGenBlock" className="form-text text-muted p-3">
                             En el crucigrama de ejemplo, la palabra vertical es "FREUD".
                         </small>
                     </div>
-                    <div className="col">
-                        <input data-i18n="start_button" type="button" className="form-control btn btn-primary" id="btn-loadGenForm"
+                    <div className="col mt-5">
+                        <input data-i18n="start_button" type="button" className="form-control btn btn-primary p-2 w-35 " id="btn-loadGenForm"
                             value="🚀 Start!" onClick={handleGenerateForm} />
                     </div>
                 </div>

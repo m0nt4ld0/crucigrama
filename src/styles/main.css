@@ -1,3 +1,4 @@
+@import "tailwindcss";
 :root {
     font-family: "Ubuntu", cursive;
     font-size: 16px;
@@ -93,11 +94,14 @@ body {
 }
 
 .puzzle-form {
-    display: grid;
-    gap: 2px;
-    width: min-content;
-    padding: 10px 40px;
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  justify-content: center;
+  padding: 10px 20px;
+  overflow-x: auto;
 }
+
 
 .puzzle-cell {
     background-color: white;
@@ -117,9 +121,19 @@ body {
 
 .actual .puzzle-cell {
     background-color: var(--e);
-    border: 0.5px solid var(--d);
-    color: white;
+    border: 1px solid var(--d);
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 40px;
+    padding: 0;
 }
+
 
 .actual .puzzle-cell:hover, .actual .correct-answer {
     background-color: var(--f);
@@ -195,14 +209,52 @@ footer a {
 .language-btn {
     background-color: white;
     color: black;
-    padding: 10px 10px;
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    
 }
 
 .active-btn {
     background-color: var(--d);
     color: white;
     font-weight: bold;
+}
+
+
+@media screen and (max-width: 768px) {
+  .puzzle-form {
+    padding: 10px;
+    gap: 4px;
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+
+  .actual .puzzle-cell {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+  }
+
+  .btn.btn-primary {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  #mainContainer {
+    padding: 5rem 1rem;
+  }
+
+  footer {
+    font-size: 14px;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .language-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 }
