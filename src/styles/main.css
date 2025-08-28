@@ -41,29 +41,11 @@ body {
     margin: 6px 6px;
 }
 
-/* ==================================== MAINNAV ==================================== */
-
-#mainNav {
-    width: 101%;
-    position: fixed;
-    top: 0px;
-    z-index: 10000;
-    display: flex;
-}
-
-.navbar.bg-body-tertiary {
-    background-color: #2f2f2f;
-}
-
-.navbar-brand {
-    color: white;
-    font-size: xx-large;
-}
 
 /* =================================== CONTAINER =================================== */
 
 #mainContainer {
-    padding-top: 10rem;
+    padding-top: 10px;
     padding-bottom: 10rem;
     background-color: var(--h);
     font-size: large;
@@ -129,28 +111,8 @@ body {
     background-color: var(--c);
 }
 
-/* ===================================== TEXTAREA ===================================== */
 
-#cpuzzle-code textarea {
-    font-family: Consolas;
-    background-color: var(--a);
-    color: var(--h);
-    width: 300px;
-    height: 300px;
-}
 
-/* ==================================== BUTTONS ===================================== */
-.btn.btn-primary {
-    color: var(--h);
-    background-color: var(--a);
-    border: 1px solid var(--c);
-    margin: 1px 3px;
-    font-size: medium;
-}
-
-.btn.btn-primary:hover {
-    background-color: #3C096C;
-}
 
 /* ===================================== FOOTER ===================================== */
 footer {
@@ -205,4 +167,85 @@ footer a {
     background-color: var(--d);
     color: white;
     font-weight: bold;
+}
+/* Puzzle form uses CSS grid for auto-sizing */
+.puzzle-form {
+    display: grid;
+    gap: 4px; /* space between cells */
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 95vw; /* prevent overflow */
+}
+
+/* Rounded puzzle cells (responsive) */
+.puzzle-cell {
+    width: min(8vw, 48px);   /* responsive: max 48px, min based on screen */
+    height: min(8vw, 48px);
+    text-align: center;
+    font-size: clamp(12px, 2.5vw, 20px); /* scales font */
+    font-weight: bold;
+    border: 2px solid #333;
+    border-radius: 12px;
+    background-color: white;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Highlighted pre-filled vertical word (FREUD) */
+.prefilled-cell {
+    background-color: #4b0082 !important; /* dark purple */
+    color: white !important;
+    border: 2px solid #4b0082 !important;
+}
+
+/* Correct row styling */
+.correct-answer {
+    background-color: #4caf50 !important; /* soft green */
+    color: white !important;
+    border: 2px solid #388e3c !important;
+}
+
+/* Extra: ensure cells shrink properly on very small screens */
+@media (max-width: 480px) {
+    .puzzle-cell {
+        width: min(10vw, 36px);
+        height: min(10vw, 36px);
+        font-size: clamp(10px, 3vw, 16px);
+    }
+}
+/* ==================================== BUTTONS ===================================== */
+.btn.btn-primary {
+    background-color: var(--a);
+    color: var(--h);
+    border: none;
+    border-radius: 8px;         /* rounded corners */
+    padding: 0.6rem 1.2rem;     /* consistent spacing */
+    margin: 4px;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+.btn.btn-primary:hover {
+    background-color: var(--c); /* purple from palette */
+    transform: translateY(-2px); /* subtle lift effect */
+}
+
+.btn.btn-primary:active {
+    background-color: var(--d);
+    transform: translateY(0px);
+}
+
+.btn.btn-primary:disabled {
+    background-color: var(--f);
+    color: var(--h);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.main-heading {
+    text-align: center; 
+    margin-bottom: 1.5rem; 
+    font-size: 2.5rem; 
+    color: var(--a);
 }

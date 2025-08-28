@@ -29,7 +29,7 @@ function App() {
       <div className="container-fluid" id="mainContainer">
         <div className="crossword-container d-flex flex-column">
           <div className="d-flex justify-content-center">
-            <h2>Crossword Completion Progress</h2>
+            <h2 class="main-heading">Crossword Completion Progress</h2>
           </div>
           <div className="h-100 d-flex align-items-center justify-content-center">
             <div className="progress" style={{ width: '60%' }}>
