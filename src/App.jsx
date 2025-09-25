@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import './styles/main.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Navbar from './components/Navbar.jsx'
 import PuzzleFormContainer from './components/PuzzleFormContainer.jsx'
@@ -8,6 +10,7 @@ import Footer from './components/Footer.jsx'
 import CrosswordContainer from './components/CrosswordContainer.jsx'
 import ColorConfiguration from './components/ColorConfiguration.jsx'
 import { AppContext } from './AppProvider.jsx'
+import SettingsDropdown from './components/SettingsDropdown.jsx'
 
 
 // Main App component that renders the entire application.
