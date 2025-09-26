@@ -31,12 +31,22 @@ const PuzzleFormContainer = ({ restartCrossword }) => {
     return (
         <>
             <form className="container-sm" id="cpuzzle-options">
-                <input data-i18n="restart_button" type="button" className="btn btn-primary" id="btn-restart" value="♻️ Restart" onClick={() => restartCrossword()} />
-                <input data-i18n="view_answers_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🔎 Show Answers" onClick={() => setShowAnswers(true)} />
-                <input data-i18n="print_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🖨️ Print" onClick={reactToPrintFn} />
+                <input data-i18n="restart_button" type="button" className="btn btn-primary text-wrap w-auto" id="btn-restart" value="♻️ Restart" onClick={() => restartCrossword()} />
+
+                <input data-i18n="view_answers_button" type="button" className="btn btn-primary text-wrap w-auto" id="btn-showAnswers" value="🔎 Show Answers" onClick={() => setShowAnswers(true)} />
+                
+                <input data-i18n="print_button" type="button" className="btn btn-primary text-wrap w-auto" id="btn-showAnswers" value="🖨️ Print" onClick={reactToPrintFn} />
+
+                {/* Buttons to control the timer */}
+                {!timerRef && <button data-i18n="start_timer_button" id="start_timer_button" onClick={() => startTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="btn btn-primary text-wrap w-auto" type="button">
+                    ⏱️ Start Timer
+                </button>}
+                {timerRef && <button data-i18n="restart-timer-button" id="restart-button" onClick={() => restartTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="btn btn-primary text-wrap w-auto">
+                    Restart Timer
+                </button>}
 
                 <div id="timer-container">
-                    <span>Time Left: </span><span id="timer">
+                    <span>Time Remaining: </span><span id="timer">
                         {formatTime(timeLeft)}
                     </span>
                 </div>
@@ -46,18 +56,9 @@ const PuzzleFormContainer = ({ restartCrossword }) => {
                     {/* Your crossword will go here */}
                 </div>
 
-                {/* Buttons to control the timer */}
-                {!timerRef && <button id="start-button" onClick={() => startTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="btn btn-primary" type="button">
-                    Start Timer
-                </button>}
-                {timerRef && <button id="restart-button" onClick={() => restartTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="btn btn-primary">
-                    Restart Timer
-                </button>}
+                
 
-                <button data-i18n="configuration_button_text" type="button" className="btn btn-primary" id="btn-config"
-                    data-bs-toggle="modal" data-bs-target="#configurationModal">
-                    🔩 Settings
-                </button>
+ 
 
             </form>
             <div style={{ display: 'none' }}>

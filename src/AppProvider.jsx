@@ -38,10 +38,10 @@ export const AppProvider = ({ children }) => {
 
     // {Object} original_colors - Ref object containing original color variables.
     const original_colors = useRef({
-        '--c': '#3C096C',
-        '--d': '#5A189A',
-        '--e': '#7B2CBF',
-        '--f': '#9D4EDD',
+        '--c': '#4c65877f',
+        '--d': '#6b826e9e',
+        '--e': 'rgba(255, 255, 255, 0.728)',
+        '--f': '#6b826e7d',
     });
 
     // {Object} colors - Object containing color variables.
