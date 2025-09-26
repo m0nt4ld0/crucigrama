@@ -224,49 +224,9 @@ footer a {
     color: white;
 }
 
-/* ================= DROPDOWN MENU STYLING ================= */
-
-.dropdown-menu {
-    position: absolute;
-    top: 110%;
-    right: 0;
-    background-color: #eeeef0;
-    border: 1px solid #ccc;
-    min-width: 180px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    border-radius: 8px;
-
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Dropdown visible state (toggle via React conditional) */
-.dropdown-menu.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* ================= DROPDOWN ITEM STYLING ================= */
+/* ================== DROPDOWN ===========================*/
 
 .dropdown-item {
-    background-color: var(--c);
-    color: black;
-    padding: 10px;
-    text-align: left;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 0;
-    transition: background 0.2s ease;
+    padding: 12px 16px;
 }
 
-.dropdown-item:hover {
-    background-color: var(--d);
-    color: white;
-}
