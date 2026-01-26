@@ -27,10 +27,10 @@ export const AppProvider = ({ children }) => {
   const [refs, setRefs] = useState(puzzleJSON.refs);
 
   const original_colors = useRef({
-    '--c': '#3C096C',
-    '--d': '#5A189A',
-    '--e': '#7B2CBF',
-    '--f': '#9D4EDD',
+    '--c': '#111111',
+    '--d': '#1f1f1f',
+    '--e': '#2f2f2f',
+    '--f': '#3f3f3f',
   });
 
   const [colors, setColors] = useState(original_colors.current);

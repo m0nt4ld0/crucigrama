@@ -65,7 +65,7 @@ export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
   }, [answers, vword]);
 
   return (
-    <div className='puzzle-form' style={{ display: 'grid', gap: '4px', gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
+    <div className='puzzle-form' style={{ display: 'grid', gap: '8px', gridTemplateRows: `repeat(${answers.length}, 1fr)` }}>
       {answers.map((rowWord, i) => {
         try {
           const charIndex = rowWord.toLowerCase().indexOf(vword[i].toLowerCase());
@@ -75,12 +75,11 @@ export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
             const isDisabled = j === charIndex;
             const isWordCorrect = isCorrect[i];
 
-            // UPDATED: Classes now use CSS variables from the color context
-            const baseClasses = "w-10 h-10 md:w-12 md:h-12 text-center uppercase font-bold text-lg rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white";
-            const enabledClasses = "bg-[var(--e)] border border-[var(--d)] hover:bg-[var(--f)]";
-            const disabledClasses = "bg-[var(--c)] border-[var(--d)] cursor-not-allowed";
-            const correctClasses = "bg-[var(--f)] border-[var(--d)]";
-            
+            const baseClasses = "w-11 h-11 md:w-13 md:h-13 text-center uppercase font-bold text-lg rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 text-white hover:scale-105 active:scale-95 shadow-lg";
+            const enabledClasses = "bg-gradient-to-br from-gray-800 to-gray-700 border border-gray-600 hover:shadow-xl hover:shadow-gray-600/50";
+            const disabledClasses = "bg-gradient-to-br from-gray-900 to-black border border-gray-800 cursor-not-allowed";
+            const correctClasses = "bg-gradient-to-br from-gray-600 to-gray-500 border border-gray-400";
+
             const cellClasses = `${baseClasses} ${isDisabled ? disabledClasses : isWordCorrect ? correctClasses : enabledClasses}`;
 
             return (
@@ -126,7 +125,7 @@ const CrosswordContainer = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-800 rounded-lg shadow-lg inline-block">
+    <div className="p-6 bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 rounded-2xl shadow-2xl inline-block border border-gray-700/40 hover:border-gray-500/50 transition-all duration-300 scale-in">
       <DrawCrossword showAnswers={false} handleKeyDown={handleKeyDown} inputRefs={inputRefs} />
     </div>
   );
