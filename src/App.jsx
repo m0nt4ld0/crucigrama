@@ -13,13 +13,12 @@ function App() {
     setShowAnswers(false);
   };
 
-  // The 'style={colors}' prop here applies the CSS variables globally
   return (
-    <div className="min-h-screen flex flex-col" style={colors}>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-black via-gray-900 to-black" style={colors}>
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-12 max-w-6xl">
         <GameContainer restartCrossword={restartCrossword} />
-        <div className="my-12 border-t border-gray-700"></div>
+        <div className="my-16 border-t border-gray-700/40"></div>
         <PersonalisedPuzzleContainer />
       </main>
       <Footer />

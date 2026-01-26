@@ -39,15 +39,15 @@ const ColorConfiguration = () => {
   };
 
   const ColorSettingRow = ({ labelKey, colorKey, value }) => (
-    <div className="flex items-center justify-between p-3 bg-gray-900 rounded-lg">
-      <div>
-        <label data-i18n={labelKey} className="font-medium text-gray-300">
+    <div className="flex items-center justify-between p-4 rounded-xl bg-gray-800/70 border border-gray-700/50 hover:border-gray-500/50 transition-all duration-300 group">
+      <div className="flex-1">
+        <label data-i18n={labelKey} className="font-semibold text-gray-200 group-hover:text-white transition-colors block mb-1">
           {labelKey.replace(/_/g, ' ')}
         </label>
-        <code className="block text-xs text-gray-500 uppercase">{value}</code>
+        <code className="block text-xs text-gray-500 uppercase font-mono">{value}</code>
       </div>
       <div 
-        className="relative w-16 h-10 rounded-md border-2 border-gray-600 overflow-hidden" 
+        className="relative w-20 h-12 rounded-lg border-2 border-gray-500/60 overflow-hidden shadow-lg ml-4 hover:border-gray-400 transition-all duration-300 group-hover:scale-110" 
         style={{ backgroundColor: value }}
       >
         <input
@@ -62,38 +62,49 @@ const ColorConfiguration = () => {
   );
 
   return (
-    <div className="modal fade mb-3" id="configurationModal" tabIndex="-1" data-bs-backdrop="static" aria-labelledby="configModalLabel" aria-hidden="true">
+    <div className="modal fade" id="configurationModal" tabIndex="-1" data-bs-backdrop="static" aria-labelledby="configModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content bg-gray-800 text-gray-200 border border-gray-700 shadow-2xl rounded-xl">
-          <div className="modal-header border-b border-gray-700 p-4 flex justify-between items-center">
-            <h1 data-i18n="config_modal_title" className="modal-title text-xl font-semibold text-purple-400 flex items-center gap-2" id="configModalLabel">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              Appearance Settings
+        <div className="modal-content bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 text-gray-200 border border-gray-700/40 shadow-2xl rounded-2xl">
+          <div className="modal-header border-b border-gray-700/40 p-6 flex justify-between items-center">
+            <h1 data-i18n="config_modal_title" className="modal-title text-2xl font-bold bg-gradient-to-r from-gray-50 to-gray-300 bg-clip-text text-transparent flex items-center gap-3" id="configModalLabel">
+              <span className="text-3xl">🎨</span>
+              Theme Settings
             </h1>
-            <button type="button" className="text-gray-400 hover:text-white" data-bs-dismiss="modal" aria-label="Close" onClick={handleCancel}>
+            <button type="button" className="text-gray-400 hover:text-white transition-colors" data-bs-dismiss="modal" aria-label="Close" onClick={handleCancel}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
-          {/* Refined: Increased padding from p-4 to p-6 for more space below the content */}
           <div className="modal-body p-6 space-y-4">
+            <p className="text-gray-400 text-sm mb-6">Customize your puzzle theme colors. Changes apply instantly!</p>
             <ColorSettingRow labelKey="config_vertical_setting" colorKey="--c" value={colors['--c']} />
             <ColorSettingRow labelKey="config_border_setting" colorKey="--d" value={colors['--d']} />
             <ColorSettingRow labelKey="config_empty_cell_setting" colorKey="--e" value={colors['--e']} />
             <ColorSettingRow labelKey="config_correct_cell_setting" colorKey="--f" value={colors['--f']} />
           </div>
-          <div className="modal-footer flex justify-between items-center border-t border-gray-700 p-4">
-            <button data-i18n="config_reset_settings" type="button" onClick={handleResetToDefaults}
-              className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-bold rounded-md transition-colors flex items-center gap-2">
+          <div className="modal-footer flex justify-between items-center border-t border-gray-700/40 p-6 gap-3">
+            <button 
+              data-i18n="config_reset_settings" 
+              type="button" 
+              onClick={handleResetToDefaults}
+              className="px-6 py-2 bg-gradient-to-r from-gray-200 to-gray-400 hover:from-gray-300 hover:to-gray-500 text-gray-900 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 shadow-lg hover:shadow-gray-300/60"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h5" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12A8 8 0 1013.44 5.23" /></svg>
-              Reset to Default
+              Reset
             </button>
-            <div className="space-x-2">
-              <button type="button" data-bs-dismiss="modal" onClick={handleCancel}
-                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-md transition-colors">
+            <div className="space-x-3">
+              <button 
+                type="button" 
+                data-bs-dismiss="modal" 
+                onClick={handleCancel}
+                className="px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-100 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95"
+              >
                 Cancel
               </button>
-              <button type="button" data-bs-dismiss="modal"
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-md transition-colors">
+              <button 
+                type="button" 
+                data-bs-dismiss="modal"
+                className="px-6 py-2 bg-gradient-to-r from-gray-200 to-gray-400 hover:from-gray-300 hover:to-gray-500 text-gray-900 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-gray-300/60"
+              >
                 Done
               </button>
             </div>
