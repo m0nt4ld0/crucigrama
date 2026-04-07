@@ -1,7 +1,7 @@
 # Crucigrama
 
 ## **Índice**
-- [Español 🇦🇷](#crucigrama-)
+- [Español 🇪🇸](#crucigrama-)
 - [Français 🇫🇷](README.fr.md)
 - [English 🇬🇧](README.en.md)
 

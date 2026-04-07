@@ -2,8 +2,9 @@
 # Mots Croisés
 
 ## **Index**
-- [Espagnol 🇪🇸](#mots-croisés-🇪🇸)
+- [Español 🇪🇸](#crucigrama-)
 - [Français](#-mots-croisés)
+- [English 🇬🇧](README.en.md)
 
 ## **Mots Croisés 🇫🇷**
 - [Générer votre propre mot croisé](#générer-votre-propre-mot-croisé-💡)
