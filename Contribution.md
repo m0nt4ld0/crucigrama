@@ -37,3 +37,24 @@ This contribution involved **rewriting the entire project in ReactJS** while mai
 ---
 
 This migration is a **big step forward** in making the project **more modern, scalable, and maintainable**! Looking forward to future enhancements! 🚀  
+
+## Fixing Print Issues with react-to-print
+
+When using `react-to-print`, ensure that the component you want to print is properly referenced and mounted in the DOM.
+
+### Common Mistakes
+
+Two things were wrong:
+1. Wrong API — content → contentRef
+The version of react-to-print you have uses contentRef (a ref object directly), not the old content: () => ref.current callback pattern. Mixing old and new APIs caused the "did not receive a contentRef" warning.
+2. hidden class hides the element from the DOM
+Using className="hidden print:block" means Tailwind's display: none applies at render time, so printRef.current points to a hidden element that react-to-print can't read — hence "There is nothing to print". The fix is to visually hide it off-screen with absolute positioning instead, so it stays mounted and accessible to the ref.
+
+### Correct Approach
+
+```jsx
+ // ✅ Use contentRef instead of content callback (new API)
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+  });
+
