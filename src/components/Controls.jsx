@@ -1,17 +1,23 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { AppContext } from '../AppProvider';
-import { useReactToPrint } from 'react-to-print';
-import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/timer-crossword.js';
-import { DrawCrossword } from './CrosswordContainer';
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { AppContext } from "../AppProvider";
+import { useReactToPrint } from "react-to-print";
+import {
+  startTimerHandler,
+  restartTimerHandler,
+  formatTime,
+} from "../scripts/timer-crossword.js";
+import { DrawCrossword } from "./CrosswordContainer";
 
 const Controls = ({ handleRestart }) => {
-  const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext);
+  const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } =
+    useContext(AppContext);
   const [timeLeft, setTimeLeft] = useState(0);
 
   const printRef = useRef();
+
+  // ✅ Use contentRef instead of content callback (new API)
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    documentTitle: `Crucigrama | ${vword}`,
+    contentRef: printRef,
   });
 
   useEffect(() => {
@@ -33,27 +39,67 @@ const Controls = ({ handleRestart }) => {
 
       <div className="grid grid-cols-2 gap-3 mb-4">
         {!timerRef ? (
-          <button onClick={() => startTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors">Start Timer</button>
+          <button
+            onClick={() =>
+              startTimerHandler(
+                timerDuration,
+                timerRef,
+                setTimerRef,
+                setTimeLeft,
+              )
+            }
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors"
+          >
+            Start Timer
+          </button>
         ) : (
-          <button onClick={() => restartTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition-colors">Restart Timer</button>
+          <button
+            onClick={() =>
+              restartTimerHandler(
+                timerDuration,
+                timerRef,
+                setTimerRef,
+                setTimeLeft,
+              )
+            }
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition-colors"
+          >
+            Restart Timer
+          </button>
         )}
-        <button onClick={handleRestart} data-i18n="restart_button" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors">Restart Puzzle</button>
-        <button onClick={() => setShowAnswers(true)} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
-        <button onClick={handlePrint} data-i18n="print_button" className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">Print</button>
+        <button
+          onClick={handleRestart}
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
+        >
+          Restart Puzzle
+        </button>
+        <button
+          onClick={() => setShowAnswers(true)}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+        >
+          View Answers
+        </button>
+        <button
+          onClick={handlePrint}
+          className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors"
+        >
+          Print
+        </button>
       </div>
 
       <button
-        data-i18n="configuration_button_text"
         type="button"
         className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition-colors"
         data-bs-toggle="modal"
-        data-bs-target="#configurationModal">
+        data-bs-target="#configurationModal"
+      >
         Settings
       </button>
 
-      <div style={{ display: 'none' }}>
+      {/* ✅ Remove hidden class — element must be visible in DOM for ref to work */}
+      <div style={{ position: "absolute", top: "-9999px", left: "-9999px" }}>
         <div ref={printRef}>
-          <DrawCrossword showAnswers={false} />
+          <DrawCrossword showAnswers={true} />
         </div>
       </div>
     </div>
