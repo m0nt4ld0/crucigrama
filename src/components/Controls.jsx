@@ -1,11 +1,16 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '../AppProvider';
 import { useReactToPrint } from 'react-to-print';
-import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/timer-crossword.js';
+import { startTimerHandler, restartTimerHandler, stopTimerHandler, formatTime } from '../scripts/timer-crossword.js';
 import { DrawCrossword } from './CrosswordContainer';
 
 const Controls = ({ handleRestart }) => {
   const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext);
+
+  const handleViewAnswers = () => {
+    setShowAnswers(true);
+    stopTimerHandler(timerRef, setTimerRef);
+  };
   const [timeLeft, setTimeLeft] = useState(0);
 
   const printRef = useRef();
@@ -38,7 +43,7 @@ const Controls = ({ handleRestart }) => {
           <button onClick={() => restartTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition-colors">Restart Timer</button>
         )}
         <button onClick={handleRestart} data-i18n="restart_button" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors">Restart Puzzle</button>
-        <button onClick={() => setShowAnswers(true)} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
+        <button onClick={handleViewAnswers} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
         <button onClick={handlePrint} data-i18n="print_button" className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">Print</button>
       </div>
 
