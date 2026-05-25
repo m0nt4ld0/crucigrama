@@ -2,17 +2,18 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '../AppProvider';
 import { useReactToPrint } from 'react-to-print';
 import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/timer-crossword.js';
-import { DrawCrossword } from './CrosswordContainer';
+import {DrawCrossword} from './CrosswordContainer';
 
-const Controls = ({ handleRestart }) => {
+const Controls = ({ handleRestart}) => {
   const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext);
   const [timeLeft, setTimeLeft] = useState(0);
 
-  const printRef = useRef();
+  const printRef=useRef(null);
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    documentTitle: `Crucigrama | ${vword}`,
+      contentRef: printRef,
+      documentTitle: `Crucigrama | ${vword}`,
   });
+
 
   useEffect(() => {
     if (timerRef && timeLeft === 0) {
@@ -39,7 +40,7 @@ const Controls = ({ handleRestart }) => {
         )}
         <button onClick={handleRestart} data-i18n="restart_button" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors">Restart Puzzle</button>
         <button onClick={() => setShowAnswers(true)} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
-        <button onClick={handlePrint} data-i18n="print_button" className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">Print</button>
+        <button onClick={()=>handlePrint()} data-i18n="print_button" className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">Print</button>
       </div>
 
       <button
@@ -52,8 +53,8 @@ const Controls = ({ handleRestart }) => {
       </button>
 
       <div style={{ display: 'none' }}>
-        <div ref={printRef}>
-          <DrawCrossword showAnswers={false} />
+        <div ref={printRef} style={{ display: 'flex' , justifyContent: 'center', background:'purple'}}>
+          <DrawCrossword showAnswers={false}/>
         </div>
       </div>
     </div>
