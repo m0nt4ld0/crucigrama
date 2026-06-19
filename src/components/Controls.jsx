@@ -5,12 +5,12 @@ import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/t
 import { DrawCrossword } from './CrosswordContainer';
 
 const Controls = ({ handleRestart }) => {
-  const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext);
+  const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef, colors } = useContext(AppContext);
   const [timeLeft, setTimeLeft] = useState(0);
 
   const printRef = useRef();
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
+    contentRef: printRef,
     documentTitle: `Crucigrama | ${vword}`,
   });
 
@@ -52,7 +52,8 @@ const Controls = ({ handleRestart }) => {
       </button>
 
       <div style={{ display: 'none' }}>
-        <div ref={printRef}>
+        <div ref={printRef} className="bg-gray-900 text-gray-100 h-full w-full" style={{ ...colors, padding: '2rem', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
+          <h2 className="text-center text-3xl font-bold mb-8 text-purple-300">{vword}</h2>
           <DrawCrossword showAnswers={false} />
         </div>
       </div>
