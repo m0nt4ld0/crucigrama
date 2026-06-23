@@ -5,7 +5,7 @@ import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/t
 import { DrawCrossword } from './CrosswordContainer';
 
 const Controls = ({ handleRestart }) => {
-  const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext);
+  const { showAnswers,setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext);
   const [timeLeft, setTimeLeft] = useState(0);
 
   const printRef = useRef();
@@ -13,7 +13,16 @@ const Controls = ({ handleRestart }) => {
     content: () => printRef.current,
     documentTitle: `Crucigrama | ${vword}`,
   });
+const handleViewAnswers = () => {
+  // 1. Tell React to flip the switch and show the answers on the grid
+  setShowAnswers(true);
 
+  // 2. Clear the active timer interval so the clock stops ticking
+  if (timerRef) {
+    clearInterval(timerRef);
+    setTimerRef(null); // Reset the state so the UI swaps back to the "Start Timer" button
+  }
+};
   useEffect(() => {
     if (timerRef && timeLeft === 0) {
       clearInterval(timerRef);
@@ -38,7 +47,7 @@ const Controls = ({ handleRestart }) => {
           <button onClick={() => restartTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition-colors">Restart Timer</button>
         )}
         <button onClick={handleRestart} data-i18n="restart_button" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors">Restart Puzzle</button>
-        <button onClick={() => setShowAnswers(true)} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
+        <button onClick={handleViewAnswers} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
         <button onClick={handlePrint} data-i18n="print_button" className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">Print</button>
       </div>
 
@@ -53,7 +62,7 @@ const Controls = ({ handleRestart }) => {
 
       <div style={{ display: 'none' }}>
         <div ref={printRef}>
-          <DrawCrossword showAnswers={false} />
+          <DrawCrossword showAnswers={showAnswers} />
         </div>
       </div>
     </div>
