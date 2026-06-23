@@ -8,7 +8,7 @@ import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/t
 // PuzzleFormContainer component renders the form and controls for the crossword puzzle.
 // It includes buttons to restart the puzzle, view answers, print the puzzle, and control the timer.
 const PuzzleFormContainer = ({ restartCrossword }) => {
-    const { setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext)
+    const { showAnswers, setShowAnswers, vword, timerDuration, timerRef, setTimerRef } = useContext(AppContext)
     const [timeLeft, setTimeLeft] = useState(0); // 5 minutes in seconds
 
     // It also uses the `useReactToPrint` hook to handle printing the crossword puzzle.
@@ -18,6 +18,17 @@ const PuzzleFormContainer = ({ restartCrossword }) => {
         documentTitle: `Crucigrama | ${vword}`,
         pageStyle: ``,
     });
+
+    const handleViewAnswers = () => {
+  // 1. Tell React to flip the switch and show the answers on the grid
+  setShowAnswers(true);
+
+  // 2. Clear the active timer interval so the clock stops ticking
+  if (timerRef) {
+        clearInterval(timerRef);
+        setTimerRef(null);
+    }
+};
 
     // Clears the timer interval when timeLeft reaches 0.
     useEffect(() => {
@@ -32,7 +43,7 @@ const PuzzleFormContainer = ({ restartCrossword }) => {
         <>
             <form className="container-sm" id="cpuzzle-options">
                 <input data-i18n="restart_button" type="button" className="btn btn-primary" id="btn-restart" value="♻️ Restart" onClick={() => restartCrossword()} />
-                <input data-i18n="view_answers_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🔎 Show Answers" onClick={() => setShowAnswers(true)} />
+                <input data-i18n="view_answers_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🔎 Show Answers" onClick={handleViewAnswers} />
                 <input data-i18n="print_button" type="button" className="btn btn-primary" id="btn-showAnswers" value="🖨️ Print" onClick={reactToPrintFn} />
 
                 <div id="timer-container">
@@ -61,7 +72,7 @@ const PuzzleFormContainer = ({ restartCrossword }) => {
 
             </form>
             <div style={{ display: 'none' }}>
-                <DrawCrossword contentRef={contentRef} showAnswers={false} />
+                <DrawCrossword contentRef={contentRef} showAnswers={showAnswers} />
             </div>
         </>
     )
