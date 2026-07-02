@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { AppContext } from '../AppProvider';
 import { useReactToPrint } from 'react-to-print';
-import { startTimerHandler, restartTimerHandler, formatTime } from '../scripts/timer-crossword.js';
+import { startTimerHandler, restartTimerHandler, formatTime, stopTimerHandler } from '../scripts/timer-crossword.js'; // ✅ 导入 stopTimerHandler
 import { DrawCrossword } from './CrosswordContainer';
 
 const Controls = ({ handleRestart }) => {
@@ -21,6 +21,12 @@ const Controls = ({ handleRestart }) => {
     }
   }, [timeLeft, timerRef, setTimerRef]);
 
+  // ✅ 新增：处理查看答案的函数
+  const handleViewAnswers = () => {
+    stopTimerHandler(timerRef, setTimerRef); // 停止计时器
+    setShowAnswers(true); // 显示答案
+  };
+
   return (
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-4">
@@ -38,7 +44,8 @@ const Controls = ({ handleRestart }) => {
           <button onClick={() => restartTimerHandler(timerDuration, timerRef, setTimerRef, setTimeLeft)} className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition-colors">Restart Timer</button>
         )}
         <button onClick={handleRestart} data-i18n="restart_button" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors">Restart Puzzle</button>
-        <button onClick={() => setShowAnswers(true)} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
+        {/* ✅ 修改按钮的 onClick 为新函数 */}
+        <button onClick={handleViewAnswers} data-i18n="view_answers_button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">View Answers</button>
         <button onClick={handlePrint} data-i18n="print_button" className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">Print</button>
       </div>
 
