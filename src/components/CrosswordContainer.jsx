@@ -105,32 +105,3 @@ export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
     </div>
   );
 };
-
-const CrosswordContainer = () => {
-  const { answers } = useContext(AppContext);
-  const maxWordLength = answers.reduce((max, word) => Math.max(max, word.length), 0);
-  const inputRefs = useRef(answers.map(() => Array(maxWordLength).fill(null)));
-
-  const handleKeyDown = (e, i, j) => {
-    const key = e.key;
-    let nextFocus = null;
-
-    if (key === 'ArrowUp' && i > 0) nextFocus = inputRefs.current[i - 1][j];
-    else if (key === 'ArrowDown' && i < answers.length - 1) nextFocus = inputRefs.current[i + 1][j];
-    else if (key === 'ArrowLeft' && j > 0) nextFocus = inputRefs.current[i][j - 1];
-    else if (key === 'ArrowRight') nextFocus = inputRefs.current[i][j + 1];
-
-    if (nextFocus && !nextFocus.disabled) {
-      e.preventDefault();
-      nextFocus.focus();
-    }
-  };
-
-  return (
-    <div className="p-4 bg-gray-800 rounded-lg shadow-lg inline-block">
-      <DrawCrossword showAnswers={false} handleKeyDown={handleKeyDown} inputRefs={inputRefs} />
-    </div>
-  );
-};
-
-export default CrosswordContainer;
