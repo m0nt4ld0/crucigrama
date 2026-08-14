@@ -13,15 +13,30 @@ function App() {
     setShowAnswers(false);
   };
 
-  // The 'style={colors}' prop here applies the CSS variables globally
   return (
     <div className="min-h-screen flex flex-col" style={colors}>
       <Navbar />
+
       <main className="flex-grow container mx-auto px-4 py-8">
+
+        {/* Welcome banner */}
+        <div className="mb-8 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-center text-white shadow-xl">
+          <h1 className="text-3xl font-bold mb-2">
+            Crossword Puzzle Maker
+          </h1>
+
+          <p className="text-indigo-100">
+            Create, customize, and enjoy your own crossword puzzles!
+          </p>
+        </div>
+
         <GameContainer restartCrossword={restartCrossword} />
+
         <div className="my-12 border-t border-gray-700"></div>
+
         <PersonalisedPuzzleContainer />
       </main>
+
       <Footer />
       <ColorConfiguration />
     </div>
