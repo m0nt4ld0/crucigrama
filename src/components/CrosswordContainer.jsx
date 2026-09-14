@@ -6,6 +6,12 @@ import { stopTimerHandler } from '../scripts/timer-crossword';
 export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
   const { vword, answers, timerRef, setTimerRef } = useContext(AppContext);
 
+  useEffect(() => {
+    if (showAnswers && timerRef) {
+      stopTimerHandler(timerRef, setTimerRef);
+    }
+  }, [showAnswers, timerRef, setTimerRef]);
+
   if (!answers || answers.length === 0 || !vword) {
     return <div className="p-4">Loading puzzle...</div>;
   }
@@ -107,7 +113,7 @@ export const DrawCrossword = ({ showAnswers, handleKeyDown, inputRefs }) => {
 };
 
 const CrosswordContainer = () => {
-  const { answers } = useContext(AppContext);
+  const { answers, showAnswers } = useContext(AppContext);
   const maxWordLength = answers.reduce((max, word) => Math.max(max, word.length), 0);
   const inputRefs = useRef(answers.map(() => Array(maxWordLength).fill(null)));
 
@@ -128,7 +134,7 @@ const CrosswordContainer = () => {
 
   return (
     <div className="p-4 bg-gray-800 rounded-lg shadow-lg inline-block">
-      <DrawCrossword showAnswers={false} handleKeyDown={handleKeyDown} inputRefs={inputRefs} />
+      <DrawCrossword showAnswers={showAnswers} handleKeyDown={handleKeyDown} inputRefs={inputRefs} />
     </div>
   );
 };
