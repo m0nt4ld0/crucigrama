@@ -4,7 +4,7 @@
 - [Español 🇪🇸](README.md)
 - [Français 🇫🇷](README.fr.md)
 - [English 🇬🇧](#crossword-)
-
+- [中文 🇨🇳](README.zh-cn.md)
 ## Crossword 🇬🇧
 - [Generate your own crossword 💡](#generate-your-own-crossword-)
 - [Generate your own crossword using a JSON](#generate-your-own-crossword-using-a-json)

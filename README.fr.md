@@ -2,9 +2,9 @@
 # Mots Croisés
 
 ## **Index**
-- [Espagnol 🇪🇸](#mots-croisés-🇪🇸)
+- [Espagnol 🇪🇸](README.md)
 - [Français](#-mots-croisés)
-
+- [中文 🇨🇳](README.zh-cn.md)
 ## **Mots Croisés 🇫🇷**
 - [Générer votre propre mot croisé](#générer-votre-propre-mot-croisé-💡)
 - [Générer votre propre mot croisé en utilisant un JSON](#générer-votre-propre-mot-croisé-en-utilisant-un-json)

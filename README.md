@@ -4,7 +4,7 @@
 - [Español 🇦🇷](#crucigrama-)
 - [Français 🇫🇷](README.fr.md)
 - [English 🇬🇧](README.en.md)
-
+- [中文 🇨🇳](README.zh-cn.md)
 
 ### **Crucigrama** 🇪🇸
 - [Generar tu propio crucigrama](#generar-tu-propio-crucigrama-)
