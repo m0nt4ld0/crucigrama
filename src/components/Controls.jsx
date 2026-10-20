@@ -10,7 +10,7 @@ const Controls = ({ handleRestart }) => {
 
   const printRef = useRef();
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
+    contentRef: printRef,
     documentTitle: `Crucigrama | ${vword}`,
   });
 
